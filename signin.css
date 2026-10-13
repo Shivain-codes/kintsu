@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 40px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc; /* -> Step 2 overrides below */
 }
 
 .nav-right {
@@ -38,7 +38,7 @@
 .card {
     width: 448px;
     max-width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; /* -> Step 2 overrides below */
     padding: 35px;
 }
 
@@ -72,7 +72,7 @@
 .divider-line {
     flex: 1;
     height: 1px;
-    background: #ccc;
+    background: #ccc; /* -> Step 2 overrides below */
 }
 
 /* Footer row */
@@ -82,4 +82,110 @@
     justify-content: center;
     gap: 8px;
     margin-top: 16px;
+}
+
+/* ================================================================
+   STEP 2 — Colour theme (from Figma auth frame).
+   Palette only: backgrounds, borders, text colours, hard shadows.
+   No font changes, no radius changes — those come in later steps.
+================================================================ */
+
+:root {
+    --page-bg: #FDF2F8;   /* pale pink page */
+    --card-bg: #FFFFFF;   /* card + inputs */
+    --ink: #1A1A1A;       /* borders, hard shadows, body text */
+    --pink: #EC329F;      /* badge accent */
+    --muted: #9A9499;     /* subtitle, labels, microcopy */
+    --hairline: #EADFE5;  /* divider lines */
+}
+
+body {
+    background: var(--page-bg);
+    color: var(--ink);
+}
+
+a {
+    color: var(--ink);
+}
+
+/* Header: white bar, thick ink underline */
+.header {
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--ink);
+}
+
+#darkToggle {
+    background: transparent;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+}
+
+/* Card: white, thick ink border, hard offset shadow */
+.card {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+}
+
+/* Badge: hot pink sticker */
+.badge {
+    background: var(--pink);
+    color: #FFFFFF;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.title {
+    color: var(--ink);
+}
+
+.subtitle {
+    color: var(--muted);
+}
+
+.label-text {
+    color: var(--muted);
+}
+
+/* Inputs: white, ink border, hard shadow */
+.input {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+}
+
+/* Submit: white sticker button */
+.submit {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+}
+
+/* Divider: pale lines, muted text */
+.divider-line {
+    background: var(--hairline);
+}
+
+.divider-text {
+    color: var(--muted);
+}
+
+/* Google button: same sticker treatment */
+#googleBtn {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+}
+
+.foot-text {
+    color: var(--muted);
+}
+
+.create {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
 }
