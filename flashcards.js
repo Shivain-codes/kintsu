@@ -5,10 +5,42 @@
  * With no stacks saved, the empty state stays visible, as in the prototype.
  */
 let stacks = [];
+const DEFAULT_STUDY_STACKS = [
+    {
+        id: "stack_transformers_01",
+        title: "Transformers & Self-Attention",
+        createdAt: "Today",
+        createdAtRaw: Date.now(),
+        cards: [
+            { question: "What is Scaled Dot-Product Attention?", answer: "Attention(Q, K, V) = softmax(Q·Kᵀ / √dₖ) · V" },
+            { question: "Why is scaling by √dₖ necessary?", answer: "To prevent dot products from growing excessively large in high dimensions, which would push softmax into regions with tiny gradients." },
+            { question: "How does Multi-Head Attention differ from Single-Head?", answer: "It linearly projects queries, keys, and values h times into different subspaces, allowing the model to jointly attend to information from different representation spaces." }
+        ]
+    },
+    {
+        id: "stack_neural_nets_02",
+        title: "Neural Network Activations",
+        createdAt: "This week",
+        createdAtRaw: Date.now() - (2 * 86400000),
+        cards: [
+            { question: "What is the formula for the Sigmoid activation function?", answer: "σ(z) = 1 / (1 + e⁻ᶻ)" },
+            { question: "What problem does ReLU solve compared to Sigmoid?", answer: "ReLU helps alleviate the vanishing gradient problem for positive inputs since its derivative is a constant 1." },
+            { question: "What is the Softmax function used for?", answer: "It normalizes raw logit scores into a valid probability distribution where all elements sum to 1.0." }
+        ]
+    }
+];
+
 try {
-    const saved = JSON.parse(localStorage.getItem('kintsu_flashcards') || '[]');
-    if (Array.isArray(saved)) stacks = saved;
-} catch (e) { stacks = []; }
+    const saved = JSON.parse(localStorage.getItem('kintsu_flashcards') || 'null');
+    if (Array.isArray(saved) && saved.length > 0) {
+        stacks = saved;
+    } else {
+        stacks = DEFAULT_STUDY_STACKS;
+        localStorage.setItem('kintsu_flashcards', JSON.stringify(stacks));
+    }
+} catch (e) {
+    stacks = DEFAULT_STUDY_STACKS;
+}
 
 function escapeHtml(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
