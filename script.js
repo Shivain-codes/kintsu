@@ -453,6 +453,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     var isRunningFullCode = false;
+    var btnRunFullCode = document.getElementById('btnRunFullCode');
+    var fullCodeTerminalOutput = document.getElementById('fullCodeTerminalOutput');
+    var fullCodeInput = document.getElementById('fullCodeInput');
+    var fullCodeLangSelect = document.getElementById('fullCodeLangSelect');
     if (btnRunFullCode && fullCodeTerminalOutput) {
         btnRunFullCode.addEventListener('click', function () {
             if (isRunningFullCode) return;
@@ -715,6 +719,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(function () { window.location.href = 'dashboard.html'; }, 400);
                 }, 500);
             }
+        });
+    }
+
+    var googleBtn = document.getElementById('googleBtn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', function () {
+            var demoUser = { email: 'student@kintsu.edu', username: 'student' };
+            safeSetStorage('kintsu_user', JSON.stringify(demoUser));
+            googleBtn.textContent = 'CONNECTING...';
+            setTimeout(function () {
+                window.location.href = 'dashboard.html';
+            }, 300);
         });
     }
 });
