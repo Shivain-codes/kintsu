@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an account · Kintsu</title>
+
+    <!-- Own stylesheet for the sign-up page (same Kintsu look as
+         sign-in, plus the .form-error style). -->
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <!-- Header / Nav - same as signin.html in this repo -->
+    <header class="header">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>KINTSU</a>
+        <div class="nav-right">
+            <a href="#">Dashboard</a>
+            <a href="#">Flashcards</a>
+            <button type="button" id="darkToggle">Toggle</button>
+            <a href="signin.html">Sign in</a>
+        </div>
+    </header>
+
+    <!-- Create account card -->
+    <main class="main">
+        <div class="card">
+
+            <div class="card-head">
+                <span class="badge">CREATE ACCOUNT</span>
+                <h1 class="title">Start studying</h1>
+                <p class="subtitle">Kintsu &middot;</p>
+            </div>
+
+            <!-- The form is handled by signup.js, not by a server post.
+                 See signup.js for validation and saving. -->
+            <form class="form" id="signupForm" method="POST" novalidate>
+
+                <label class="label">
+                    <span class="label-text">EMAIL</span>
+                    <input class="input" id="signupEmail" type="email" name="email" required placeholder="name@domain.com" autocomplete="email">
+                </label>
+
+                <label class="label">
+                    <span class="label-text">PASSWORD</span>
+                    <input class="input" id="signupPassword" type="password" name="password" required placeholder="••••••••" autocomplete="new-password">
+                </label>
+
+                <p class="form-error" id="signupError" role="alert" hidden></p>
+
+                <button class="submit" type="submit">CREATE ACCOUNT</button>
+            </form>
+
+            <div class="divider">
+                <span class="divider-line"></span>
+                <span class="divider-text">OR</span>
+                <span class="divider-line"></span>
+            </div>
+
+            <button type="button" id="googleBtn">Continue with Google</button>
+
+            <div class="foot">
+                <span class="foot-text">Already have an account?</span>
+                <a class="create" href="signin.html">Sign in</a>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="signup.js"></script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header: brand left, nav right */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+/* Logo mark: pink/black sticker circle (pure CSS) */
+.brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: linear-gradient(to bottom, var(--pink) 52%, var(--ink) 52%);
+    box-shadow: 2px 2px 0 var(--ink);
+    flex-shrink: 0;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Main area: center the card */
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 60px);
+    padding: 56px 20px;
+}
+
+/* The card */
+.card {
+    width: 400px;
+    max-width: 100%;
+    padding: 36px 36px 32px;
+}
+
+/* Head block (badge, title, subtitle) centered */
+.card-head {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form: stack the fields vertically */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+}
+
+/* Divider row */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+}
+
+/* Google button: full width */
+#googleBtn {
+    width: 100%;
+    height: 44px;
+    cursor: pointer;
+}
+
+/* Submit: full width */
+.submit {
+    width: 100%;
+    height: 44px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+/* Footer row */
+.foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.create {
+    display: inline-block;
+    padding: 8px 18px;
+    text-decoration: none;
+}
+
+:root {
+    --page-bg: #FDF2F8;
+    --card-bg: #FFFFFF;
+    --ink: #1A1A1A;
+    --pink: #EC329F;
+    --muted: #9A9499;
+    --hairline: #EADFE5;
+}
+
+body {
+    background: var(--page-bg);
+    color: var(--ink);
+}
+
+a {
+    color: var(--ink);
+}
+
+/* Header: white bar, thick ink underline */
+.header {
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--ink);
+}
+
+#darkToggle {
+    background: transparent;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.nav-right a {
+    padding: 6px 4px;
+}
+
+/* Card: white, thick ink border, rounded, hard offset shadow */
+.card {
+    background: var(--card-bg);
+    border: 3px solid var(--ink);
+    border-radius: 20px;
+    box-shadow: 7px 7px 0 var(--ink);
+}
+
+/* Badge: hot pink sticker pill */
+.badge {
+    display: inline-block;
+    background: var(--pink);
+    color: #FFFFFF;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 16px;
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.title {
+    color: var(--ink);
+}
+
+.subtitle {
+    color: var(--muted);
+}
+
+.label-text {
+    color: var(--muted);
+}
+
+/* Inputs: white, ink border, rounded, hard shadow */
+.input {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+    outline: none;
+}
+
+.input:focus {
+    box-shadow: 4px 4px 0 var(--pink);
+    border-color: var(--ink);
+}
+
+/* Submit: white sticker button */
+.submit {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+}
+
+.submit:hover {
+    background: var(--pink);
+    color: #FFFFFF;
+}
+
+.submit:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* Divider: pale lines, muted text */
+.divider-line {
+    background: var(--hairline);
+}
+
+.divider-text {
+    color: var(--muted);
+}
+
+/* Google button: same sticker treatment */
+#googleBtn {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+}
+
+#googleBtn:hover {
+    background: var(--ink);
+    color: var(--card-bg);
+}
+
+#googleBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.foot-text {
+    color: var(--muted);
+}
+
+.create {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--ink);
+}
+
+.create:hover {
+    background: var(--pink);
+    color: #FFFFFF;
+}
+
+:root {
+    --font-display: 'Archivo', system-ui, sans-serif;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+}
+
+body {
+    font-family: var(--font-display);
+}
+
+/* Brand: heavy, wide-tracked */
+.brand {
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: 0.14em;
+}
+
+/* Header nav: bold, compact */
+.nav-right a,
+#darkToggle {
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    font-family: var(--font-display);
+}
+
+/* Badge: small heavy uppercase sticker text */
+.badge {
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Title: heavy display, tight */
+.title {
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin: 12px 0 6px;
+}
+
+/* Subtitle: mono microcopy */
+.subtitle {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Field labels: tiny tracked-out mono caps */
+.label-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+/* Inputs: readable text size */
+.input {
+    font-family: var(--font-display);
+    font-size: 15px;
+}
+
+/* Submit: mono sticker caps like Figma */
+.submit {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Divider: mono micro caps */
+.divider-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* Google button: mono like Figma */
+#googleBtn {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* Footer: mono microcopy + bold link */
+.foot-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.create {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+body.dark {
+    --page-bg: #17111B;
+    --card-bg: #241B2B;
+    --ink: #F6EFF8;
+    --muted: #A89BAE;
+    --hairline: #3B3044;
+}
+
+/* Form error: shown by signup.js when validation fails.
+   This was missing from signin.css, so the error text previously
+   rendered as plain unstyled text. Hidden by default (the hidden
+   attribute on the element); signup.js unhides it on error. */
+.form-error {
+    color: #C81E1E;
+    background: #FDECEC;
+    border: 2px solid #C81E1E;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.form-error[hidden] {
+    display: none;
+}
