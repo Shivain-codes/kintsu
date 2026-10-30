@@ -14,33 +14,26 @@
 
     <!-- Top Navigation Bar -->
     <header class="dash-navbar">
-        <div class="nav-brand-group">
-            <a href="index.html" class="brand-link" title="Return to Home">
-                <div class="brand-avatar" aria-hidden="true">
-                    <svg viewBox="0 0 36 36" width="28" height="28" fill="none">
-                        <circle cx="18" cy="18" r="16" fill="#F472B6"/>
-                        <!-- Cat face sticker -->
-                        <polygon points="10,12 14,19 8,19" fill="#18121E"/>
-                        <polygon points="26,12 28,19 22,19" fill="#18121E"/>
-                        <circle cx="18" cy="22" r="9" fill="#18121E"/>
-                        <circle cx="15" cy="20" r="1.5" fill="#FFFFFF"/>
-                        <circle cx="21" cy="20" r="1.5" fill="#FFFFFF"/>
-                        <polygon points="18,22 16.5,24 19.5,24" fill="#F472B6"/>
-                    </svg>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand" title="Return to Home">
+                <div class="logo-box" aria-hidden="true">
+                    <span class="logo-icon">✦</span>
                 </div>
-                <span class="brand-text">ONE STOP NOTES</span>
+                <span class="logo-text">Kintsu</span>
             </a>
-        </div>
 
-        <nav class="nav-pill-actions">
-            <a href="dashboard.html" class="nav-pill active-pill">Dashboard</a>
-            <a href="index.html#flashcards" class="nav-pill outline-pill">Flashcards</a>
-            <button type="button" class="theme-toggle-btn" id="dashThemeToggle" aria-label="Toggle theme">
-                <span class="theme-icon">☀️</span>
-            </button>
-            <div class="user-email-pill" id="userEmailTag" title="Logged in user">testwithpranav0711@gmail.com</div>
-            <button type="button" class="sign-out-btn" id="signOutBtn">SIGN OUT</button>
-        </nav>
+            <nav class="nav-pill-actions">
+                <a href="dashboard.html" class="nav-pill active-pill">Dashboard</a>
+                <a href="index.html#live-demo" class="nav-pill outline-pill">Workspace</a>
+                <a href="flashcards.html" class="nav-pill outline-pill">Flashcards</a>
+                <button type="button" class="theme-toggle-btn" id="dashThemeToggle" aria-label="Toggle theme">
+                    <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+                    <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+                <div class="user-email-pill" id="userEmailTag" title="Logged in user">Guest</div>
+                <button type="button" class="sign-out-btn" id="signOutBtn">SIGN OUT</button>
+            </nav>
+        </div>
     </header>
 
     <!-- Main Container -->
@@ -53,7 +46,7 @@
                     <span class="badge-sparkle">✦</span> STUDY VAULT
                 </div>
                 <h1 class="vault-title">
-                    Welcome back, <span class="user-sticker-pill" id="welcomeUserPill">testwithpranav0711</span>
+                    Welcome back, <span class="user-sticker-pill" id="welcomeUserPill">Guest</span>
                 </h1>
                 <p class="vault-subtitle">Pick up where you left off or start a new note.</p>
             </div>
@@ -85,18 +78,6 @@
             </div>
         </section>
 
-        <!-- Multi-select Batch Toolbar (Hidden by default) -->
-        <div class="batch-bar" id="batchBar" style="display: none;">
-            <div class="batch-left">
-                <span id="selectedCountText">0 notes selected</span>
-            </div>
-            <div class="batch-right">
-                <button type="button" class="btn-batch-delete" id="batchDeleteBtn">Delete Selected</button>
-                <button type="button" class="btn-batch-cancel" id="batchCancelBtn">Done</button>
-            </div>
-        </div>
-
-        <!-- Dashboard Layout: Sidebar + Notes Grid -->
         <div class="dash-layout">
 
             <!-- Left Sidebar (Boards) -->
@@ -121,14 +102,43 @@
                     </button>
                 </div>
 
-                <button type="button" class="btn-new-board" id="openNewBoardModalBtn">
+                <button type="button" class="btn-new-board" id="newBoardBtn">
                     <span class="plus-icon">+</span>
                     <span>New Board</span>
                 </button>
+                <div class="new-board-form" id="newBoardForm" style="display: none;">
+                    <input type="text" id="boardNameInlineInput" class="form-input" placeholder="Board name&hellip;">
+                    <div class="board-color-swatches" id="boardColorSwatches">
+                        <button type="button" class="color-swatch selected" data-color="#F472B6" style="background: #F472B6;" aria-label="Pink"></button>
+                        <button type="button" class="color-swatch" data-color="#FACC15" style="background: #FACC15;" aria-label="Yellow"></button>
+                        <button type="button" class="color-swatch" data-color="#A78BFA" style="background: #A78BFA;" aria-label="Lilac"></button>
+                        <button type="button" class="color-swatch" data-color="#6EE7B7" style="background: #6EE7B7;" aria-label="Mint"></button>
+                        <button type="button" class="color-swatch" data-color="#38BDF8" style="background: #38BDF8;" aria-label="Sky"></button>
+                        <button type="button" class="color-swatch" data-color="#FB923C" style="background: #FB923C;" aria-label="Coral"></button>
+                        <button type="button" class="color-swatch" data-color="#A3E635" style="background: #A3E635;" aria-label="Lime"></button>
+                    </div>
+                    <span class="board-form-error" id="boardInlineError"></span>
+                    <div class="new-board-actions">
+                        <button type="button" class="btn-board-create" id="createBoardInlineBtn">&#10003; Create</button>
+                        <button type="button" class="btn-board-cancel" id="cancelBoardInlineBtn">&#10005; Cancel</button>
+                    </div>
+                </div>
             </aside>
 
             <!-- Center Content (Notes Grid) -->
             <main class="notes-content">
+                <div class="batch-bar" id="batchBar" style="display: none;">
+                    <div class="batch-left">
+                        <span id="selectedCountText">0 selected</span>
+                    </div>
+                    <div class="batch-right">
+                        <select id="batchMoveSelect" class="batch-move-select" aria-label="Move to board">
+                            <option value="">Move to board</option>
+                        </select>
+                        <button type="button" class="btn-batch-delete" id="batchDeleteBtn">Delete</button>
+                        <button type="button" class="btn-batch-cancel" id="batchCancelBtn">&#10005;</button>
+                    </div>
+                </div>
                 <div class="notes-header">
                     <h2 class="section-title">
                         <span id="currentBoardTitle">All Notes</span>
@@ -152,16 +162,6 @@
 
     </div>
 
-    <!-- Bottom Notification Banner (Yellow Pill) -->
-    <div class="sample-note-banner" id="sampleBanner">
-        <div class="banner-content">
-            <span class="wave-icon">👋</span>
-            <span>We added a Sample note to your dashboard so you can explore right away. Feel free to delete it any time.</span>
-        </div>
-        <button type="button" class="btn-banner-gotit" id="dismissBannerBtn">GOT IT</button>
-    </div>
-
-    <!-- Quick Start Floating Card (Bottom Right) -->
     <aside class="quick-start-widget" id="quickStartWidget">
         <div class="qs-header">
             <div class="qs-title-row">
@@ -169,7 +169,7 @@
                 <span class="qs-progress-dots" id="qsProgress">●○○○ 0/5</span>
             </div>
             <div class="qs-controls">
-                <button type="button" class="qs-ctrl-btn" id="qsMinimizeBtn" aria-label="Minimize">–</button>
+                <button type="button" class="qs-ctrl-btn" id="qsMinimizeBtn" aria-label="Minimize">&#8964;</button>
                 <button type="button" class="qs-ctrl-btn" id="qsCloseBtn" aria-label="Close">✕</button>
             </div>
         </div>
@@ -177,13 +177,13 @@
         <div class="qs-body" id="qsBody">
             <div class="qs-step-title">
                 <span class="qs-sparkle">✦</span>
-                <strong id="qsStepLabel">Step 1 - Paste your first video</strong>
+                <strong id="qsStepLabel">Step 1 · Paste your first video</strong>
             </div>
             <p class="qs-desc">Open the editor and paste a YouTube link - or use our suggested video to start immediately.</p>
             
             <div class="qs-actions">
-                <button type="button" class="btn-qs-pink" id="qsSuggestedBtn">Use suggested video</button>
-                <button type="button" class="btn-qs-outline" id="qsPasteBtn">I'll paste my own ↗</button>
+                <button type="button" class="btn-qs-pink" id="qsSuggestedBtn">✨ Use suggested video</button>
+                <button type="button" class="btn-qs-outline" id="qsPasteBtn">I'll paste my own ↗️</button>
             </div>
 
             <div class="qs-footer-hint">
@@ -192,7 +192,8 @@
         </div>
     </aside>
 
-    <!-- Modal 1: Create New Note -->
+
+    <!-- Modal: Create New Note -->
     <div class="modal-backdrop" id="createNoteModal" style="display: none;">
         <div class="modal-card">
             <div class="modal-head">
@@ -248,40 +249,10 @@
 
                 <div class="modal-actions">
                     <button type="button" class="btn-modal-cancel" id="cancelCreateModalBtn">Cancel</button>
-                    <button type="submit" class="btn-modal-submit" id="submitCreateBtn">Create Note ↗</button>
+                    <button type="submit" class="btn-modal-submit" id="submitCreateBtn">Create Note ↗️</button>
                 </div>
             </form>
         </div>
-    </div>
-
-    <!-- Modal 2: Create New Board -->
-    <div class="modal-backdrop" id="newBoardModal" style="display: none;">
-        <div class="modal-card modal-small">
-            <div class="modal-head">
-                <div class="modal-badge">✦ NEW BOARD</div>
-                <h3 class="modal-title">Create a Board</h3>
-                <button type="button" class="modal-close-btn" id="closeBoardModalBtn">✕</button>
-            </div>
-
-            <form id="createBoardForm" class="modal-form" novalidate>
-                <div class="form-group">
-                    <label for="boardNameInput" class="form-label">BOARD NAME *</label>
-                    <input type="text" id="boardNameInput" class="form-input" placeholder="e.g. Operating Systems" required>
-                    <span class="form-error" id="boardError"></span>
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" id="cancelBoardModalBtn">Cancel</button>
-                    <button type="submit" class="btn-modal-submit">Add Board</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div class="dash-toast" id="dashToast" style="display: none;">
-        <span id="toastMessage"></span>
-        <button type="button" class="toast-undo" id="toastUndoBtn" style="display: none;">Undo</button>
     </div>
 
     <script src="dashboard.js"></script>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards · Kintsu</title>
+    <meta name="description" content="Kintsu Flashcard Library - Every deck you have made, grouped by when you made it.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Grotesk:wght@600;700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="flashcards.css">
+</head>
+<body>
+    <!-- Top Navigation Bar - matches dashboard nav done by Pratishtha -->
+    <header class="dash-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand" title="Return to Home">
+                <div class="logo-box" aria-hidden="true">
+                    <span class="logo-icon">✦</span>
+                </div>
+                <span class="logo-text">Kintsu</span>
+            </a>
+
+            <nav class="nav-pill-actions">
+                <a href="dashboard.html" class="nav-pill outline-pill">Dashboard</a>
+                <a href="index.html#live-demo" class="nav-pill outline-pill">Workspace</a>
+                <a href="flashcards.html" class="nav-pill active-pill">Flashcards</a>
+                <button type="button" class="theme-toggle-btn" id="flashThemeToggle" aria-label="Toggle theme">
+                    <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+                    <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+                <div class="user-email-pill" id="userEmailTag" title="Logged in user">Guest</div>
+                <button type="button" class="sign-out-btn" id="signOutBtn">SIGN OUT</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flash-container">
+        <a href="dashboard.html" class="back-pill">&larr; DASHBOARD</a>
+
+        <div class="lib-header">
+            <div class="lib-title-block">
+                <span class="lib-icon" aria-hidden="true">▦</span>
+                <div>
+                    <h1 class="lib-title">Flashcard Library</h1>
+                    <p class="lib-subtitle">Every deck you&rsquo;ve made, grouped by when you made it.</p>
+                </div>
+            </div>
+            <div class="lib-controls">
+                <label class="search-box">
+                    <span aria-hidden="true">&#128269;</span>
+                    <input type="search" id="stackSearch" placeholder="Search stacks..." autocomplete="off">
+                </label>
+                <button type="button" class="sort-box" id="stackSortBtn" title="Toggle sort order" aria-label="Toggle sort order">
+                    <span aria-hidden="true">&#8645;</span>
+                    <span id="stackSortLabel">NEWEST</span>
+                </button>
+            </div>
+        </div>
+
+        <hr class="lib-divider">
+
+        <section class="stats-row" aria-label="Library totals">
+            <div class="stat-bar stat-mint">
+                <span class="stat-label">STACKS</span>
+                <span class="stat-value" id="stackCount">0</span>
+            </div>
+            <div class="stat-bar stat-yellow">
+                <span class="stat-label">CARDS</span>
+                <span class="stat-value" id="cardCount">0</span>
+            </div>
+        </section>
+        <div class="stacks-grid" id="stacksGrid"></div>
+
+        <div class="no-match-state" id="noMatchState" style="display: none;">
+            <p class="empty-text" id="noMatchText"></p>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon" aria-hidden="true">&#10022;</div>
+            <h2 class="empty-title">No flashcards yet</h2>
+            <p class="empty-text">Highlight text in a note and hit &ldquo;Create Flashcards +&rdquo; &mdash; new stacks show up here.</p>
+        </div>
+        <section class="feedback-card" aria-label="Send feedback">
+            <div class="feedback-head">
+                <span class="feedback-icon" aria-hidden="true">&#9993;</span>
+                <div>
+                    <h2 class="feedback-title">SEND FEEDBACK</h2>
+                    <p class="feedback-sub">Bug? Feature idea? Something confusing? Tell the maker directly.</p>
+                </div>
+            </div>
+            <div class="feedback-types" role="group" aria-label="Feedback type">
+                <button type="button" class="feedback-type" data-type="BUG">BUG</button>
+                <button type="button" class="feedback-type selected" data-type="IDEA">IDEA</button>
+                <button type="button" class="feedback-type" data-type="UX">UX</button>
+                <button type="button" class="feedback-type" data-type="OTHER">OTHER</button>
+            </div>
+            <label class="rating-label" for="experienceRange">HOW&rsquo;S THE EXPERIENCE? (<span id="ratingValue">4</span>/5)</label>
+            <input type="range" id="experienceRange" min="1" max="5" step="1" value="4" class="rating-range">
+            <label class="feedback-message-label" for="feedbackMessage">YOUR MESSAGE</label>
+            <textarea id="feedbackMessage" rows="4" maxlength="1000" placeholder="Tell me what worked, what didn't, or what you wish existed&hellip;"></textarea>
+            <div class="feedback-footer">
+                <span class="feedback-as" id="feedbackAs">Sending anonymously</span>
+                <button type="button" class="btn-pink" id="feedbackSendBtn" disabled>Send feedback</button>
+            </div>
+            <p class="feedback-note" id="feedbackNote"></p>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="reviewModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3 class="modal-title" id="reviewStackTitle">Review</h3>
+                <button type="button" class="modal-close-btn" id="reviewCloseBtn">[ Close review ]</button>
+            </div>
+            <div class="review-card" id="reviewCard">
+                <p class="review-side" id="reviewSide">QUESTION</p>
+                <p class="review-text" id="reviewText"></p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-outline" id="reviewPrevBtn">Previous</button>
+                <button type="button" class="btn-pink" id="reviewFlipBtn">Flip</button>
+                <button type="button" class="btn-pink" id="reviewNextBtn">Next</button>
+            </div>
+            <p class="review-progress" id="reviewProgress"></p>
+        </div>
+    </div>
+
+    <script src="flashcards.js"></script>
+</body>
+</html>

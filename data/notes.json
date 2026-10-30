@@ -1,27 +1,17 @@
 [
   {
-    "id": "LPMJ0FCB",
-    "title": "Python Data Structures & Algorithms",
     "board": "All Notes",
-    "videoUrl": "https://www.youtube.com/watch?v=pkYVOmU3MgA",
-    "videoId": "pkYVOmU3MgA",
-    "coverTheme": "python",
-    "date": "25/10/2026",
-    "author": "testwithpranav0711"
-  },
-  {
-    "id": "LPZH9BDJ",
-    "title": "Neural Network Fundamentals: Structural Overview",
-    "board": "All Notes",
-    "videoUrl": "https://www.youtube.com/watch?v=aircAruvnKk",
-    "videoId": "aircAruvnKk",
-    "date": "25/10/2026",
+    "date": "10/28/2026",
+    "id": "LPZH9BOJ",
+    "summary": "Deep dive into neurons, multi-layer perceptrons, activation functions, and matrix multiplication fundamentals.",
     "tags": [
       "AI",
       "Neural Networks",
       "Deep Learning"
     ],
-    "summary": "Deep dive into neurons, multi-layer perceptrons, activation functions, and matrix multiplication fundamentals.",
-    "author": "testwithpranav0711"
+    "title": "Neural Network Fundamentals: Structural Overview",
+    "videoId": "aircAruvnKk",
+    "videoUrl": "https://www.youtube.com/watch?v=aircAruvnKk",
+    "coverImage": "assets/neural-cover.webp"
   }
 ]

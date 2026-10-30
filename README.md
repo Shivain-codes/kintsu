@@ -120,3 +120,18 @@ The models/ folder has one file per Mongoose schema. Each file defines the schem
 server.js is the entry point. It sets up Express, connects to MongoDB using a connection string from the .env file, registers the route files, and starts listening on a port.
 
 The .env file stores sensitive stuff like the MongoDB connection string, the Gemini API key, and the port number. This file is never committed to Git.
+
+## STUDY VAULT DASHBOARD
+
+Open `dashboard.html` (run `node server.js` and visit http://localhost:3333/dashboard.html). The dashboard copies the live One Stop Notes dashboard design: neubrutalist cards with thick black outlines and hard shadows, pale pink page, white cards, hot pink / yellow / lavender accents, mono labels and bold display titles, default light theme with a dark-mode toggle.
+
+What the dashboard does:
+
+- Boards sidebar: All Notes plus Computer Science and Machine Learning, with per-board counts. Clicking a board filters the notes grid, updates the heading and count, and shows an empty state for empty boards. The active board is yellow.
+- Create new note: goes to the workspace editor (`index.html#workspace`), like the live site. There is no create-note modal on the dashboard.
+- New Board: an inline form inside the sidebar, not a modal. Enter a board name, pick one of seven colours (Pink, Yellow, Lilac, Mint, Sky, Coral, Lime), then Create or Cancel. Created boards are saved in the browser and appear in the sidebar.
+- Select and batch: Select turns into Cancel Select. Cards show a circular checkbox and a pink tap-to-select hint, and selected cards get a hot-pink outline. The batch bar above the grid shows the selected count, Move to board (including Unsorted), Delete, and close.
+- Quick Start: floating bottom-right card with a pink QUICK START label, 0/5 progress, minimise and close controls, Step 1 to paste a video, Use suggested video and I will paste my own buttons that go to the editor.
+- Notes: white rounded cards with cover art, ID pill, title, date, delete, and Open to the workspace. Export with Save to JSON.
+
+There is no sample banner or toast on the dashboard, matching the live site.

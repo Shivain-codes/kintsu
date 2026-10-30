@@ -355,6 +355,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             e.stopPropagation();
             if (pendingSelectionRange) {
+                var extractedText = pendingSelectionRange.toString().trim() || 'Key Lecture Concept';
                 try {
                     var mark = document.createElement('mark');
                     mark.className = 'notes-highlight-mark';
@@ -362,9 +363,27 @@ document.addEventListener('DOMContentLoaded', function () {
                     mark.appendChild(pendingSelectionRange.extractContents());
                     pendingSelectionRange.insertNode(mark);
                 } catch (err) { document.execCommand('hiliteColor', false, 'rgba(236, 50, 159, 0.85)'); }
+
+                // Save to Flashcard Library (localStorage)
+                try {
+                    var currentStacks = JSON.parse(localStorage.getItem('kintsu_flashcards') || '[]');
+                    var newStack = {
+                        id: 'stack_' + Date.now(),
+                        title: extractedText.length > 35 ? extractedText.substring(0, 35) + '…' : extractedText,
+                        createdAt: 'Today',
+                        createdAtRaw: Date.now(),
+                        cards: [
+                            { question: 'What is the definition of ' + (extractedText.length > 25 ? extractedText.substring(0, 25) : extractedText) + '?', answer: extractedText },
+                            { question: 'Why is this concept crucial in the lecture?', answer: 'It defines the core computational mechanism for representation and optimization.' },
+                            { question: 'How is this applied in practice?', answer: 'Implemented through matrix operations and optimized tensor routines.' }
+                        ]
+                    };
+                    currentStacks.unshift(newStack);
+                    localStorage.setItem('kintsu_flashcards', JSON.stringify(currentStacks));
+                } catch (e) {}
             }
             hideWorkspaceBubble();
-            showToast('✨ 3 AI Flashcards generated from note highlight!', 3500);
+            showToast('✨ 3 AI Flashcards created & saved to Library!', 3500);
             cycleCardDeck();
         });
     }
@@ -453,6 +472,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     var isRunningFullCode = false;
+    var btnRunFullCode = document.getElementById('btnRunFullCode');
+    var fullCodeTerminalOutput = document.getElementById('fullCodeTerminalOutput');
+    var fullCodeInput = document.getElementById('fullCodeInput');
+    var fullCodeLangSelect = document.getElementById('fullCodeLangSelect');
     if (btnRunFullCode && fullCodeTerminalOutput) {
         btnRunFullCode.addEventListener('click', function () {
             if (isRunningFullCode) return;
@@ -715,6 +738,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(function () { window.location.href = 'dashboard.html'; }, 400);
                 }, 500);
             }
+        });
+    }
+
+    var googleBtn = document.getElementById('googleBtn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', function () {
+            var demoUser = { email: 'student@kintsu.edu', username: 'student' };
+            safeSetStorage('kintsu_user', JSON.stringify(demoUser));
+            googleBtn.textContent = 'CONNECTING...';
+            setTimeout(function () {
+                window.location.href = 'dashboard.html';
+            }, 300);
         });
     }
 });
