@@ -11,14 +11,30 @@
 </head>
 <body>
 
-    <!-- Header / Nav - same as signin.html in this repo -->
-    <header class="header">
-        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>KINTSU</a>
-        <div class="nav-right">
-            <a href="#">Dashboard</a>
-            <a href="#">Flashcards</a>
-            <button type="button" id="darkToggle">Toggle</button>
-            <a href="signin.html">Sign in</a>
+    <!-- Header / Nav - same as Pratishtha's dashboard nav
+         (dash-navbar, as on dashboard.html and signin.html).
+         Only change: no Guest/Sign out here, since nobody is
+         logged in yet on a create-account page — the last pill
+         is Sign in instead. -->
+    <header class="dash-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand" title="Return to Home">
+                <div class="logo-box" aria-hidden="true">
+                    <span class="logo-icon">✦</span>
+                </div>
+                <span class="logo-text">Kintsu</span>
+            </a>
+
+            <nav class="nav-pill-actions">
+                <a href="dashboard.html" class="nav-pill outline-pill">Dashboard</a>
+                <a href="index.html#live-demo" class="nav-pill outline-pill">Workspace</a>
+                <a href="flashcards.html" class="nav-pill outline-pill">Flashcards</a>
+                <button type="button" class="theme-toggle-btn" id="darkToggle" aria-label="Toggle dark mode">
+                    <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+                    <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+                <a href="signin.html" class="nav-pill outline-pill">Sign in</a>
+            </nav>
         </div>
     </header>
 

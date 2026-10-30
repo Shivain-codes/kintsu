@@ -393,3 +393,57 @@ body.dark {
 .form-error[hidden] {
     display: none;
 }
+
+/* Nav bar - same as Pratishtha's dashboard nav (dash-navbar,
+   as on dashboard.html and signin.html). Copied from signin.css
+   so it uses this page's --ink variable and body.dark class. */
+.dash-navbar {
+    border-bottom: 3px solid var(--ink);
+    background-color: rgba(255, 242, 251, 0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+body.dark .dash-navbar { background-color: rgba(23, 17, 27, 0.95); }
+.nav-container {
+    max-width: 1320px; margin: 0 auto; padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.nav-brand { display: flex; align-items: center; gap: 12px; font-weight: 900; text-decoration: none; color: inherit; }
+.logo-box {
+    width: 38px; height: 38px; background: #ff4bb4; border: 3px solid var(--ink);
+    border-radius: 12px; box-shadow: 2px 2px 0 var(--ink);
+    display: grid; place-items: center; color: #ffffff; font-size: 1.25rem; flex-shrink: 0;
+}
+.logo-icon { font-size: 1.25rem; line-height: 1; color: #ffffff; }
+.logo-text { font-family: 'Space Mono', ui-monospace, monospace; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); }
+.nav-pill-actions { display: flex; align-items: center; gap: 12px; }
+.nav-pill {
+    padding: 8px 22px; border-radius: 999px; font-family: 'Space Grotesk', 'Archivo', system-ui, sans-serif; font-weight: 800; font-size: 14px;
+    text-decoration: none; border: 3px solid var(--ink); cursor: pointer; box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.nav-pill:hover { transform: translate(-1.5px, -1.5px); box-shadow: 6px 6px 0 var(--ink); }
+.nav-pill:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.active-pill { background: #A78BFA; color: #18121E; box-shadow: 4px 4px 0 var(--ink); }
+.outline-pill { background: #FFFFFF; color: #18121E; border-color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.theme-toggle-btn {
+    width: 48px; height: 46px; padding: 0; border-radius: 999px; border: 3px solid var(--ink);
+    background: #ffd84d; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 4px 4px 0 var(--ink); color: #000000;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.theme-toggle-btn:hover { transform: translate(-1.5px, -1.5px); box-shadow: 6px 6px 0 var(--ink); }
+.theme-toggle-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: block; }
+body.dark .theme-icon-sun { display: block; }
+body.dark .theme-icon-moon { display: none; }
+
+/* Theme toggle on this nav: the plain #darkToggle rule above would
+   otherwise override the dashboard yellow button. */
+#darkToggle.theme-toggle-btn {
+    background: #ffd84d;
+    width: 48px; height: 46px; padding: 0;
+    color: #000000;
+}
