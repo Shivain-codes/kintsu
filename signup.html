@@ -60,16 +60,21 @@
                 <span class="divider-line"></span>
             </div>
 
-            <button type="button" id="googleBtn">Continue with Google</button>
+            <div id="googleSignIn" class="google-signin"></div>
 
             <div class="foot">
                 <span class="foot-text">Already have an account?</span>
                 <a class="create" href="signin.html">Sign in</a>
             </div>
-
+            <section class="members" aria-label="Students already on Kintsu">
+                <h2 class="members-title">Students already on Kintsu</h2>
+                <p class="members-note" id="membersStatus">Loading...</p>
+                <ul class="members-list" id="membersList"></ul>
+            </section>
         </div>
     </main>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="signup.js"></script>
 </body>
 </html>

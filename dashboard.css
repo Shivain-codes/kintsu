@@ -1,16 +1,16 @@
 
 :root {
-    --bg-page: #17111B;
-    --bg-card: #241B2B;
-    --border-ink: #000000;
-    --border-subtle: #3A2B45;
-    --text-primary: #FFFFFF;
-    --text-secondary: #B8B0C4;
-    --text-muted: #837593;
+    --bg-page: #FDF2F8;
+    --bg-card: #FFFFFF;
+    --border-ink: #1A1A1A;
+    --border-subtle: #E5E7EB;
+    --text-primary: #18121E;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
     --accent-pink: #EC329F;
     --accent-yellow: #FACC15;
     --accent-purple: #A78BFA;
-    --shadow-hard: 3px 3px 0 #000000;
+    --shadow-hard: 3px 3px 0 #1A1A1A;
     --radius-card: 20px;
     --radius-pill: 9999px;
     --radius-input: 12px;
@@ -19,15 +19,15 @@
     --font-body: 'Inter', system-ui, sans-serif;
 }
 
-body.light-theme {
-    --bg-page: #FDF2F8;
-    --bg-card: #FFFFFF;
-    --border-ink: #1A1A1A;
-    --border-subtle: #E5E7EB;
-    --text-primary: #18121E;
-    --text-secondary: #4B5563;
-    --text-muted: #6B7280;
-    --shadow-hard: 3px 3px 0 #1A1A1A;
+body.dark {
+    --bg-page: #17111B;
+    --bg-card: #241B2B;
+    --border-ink: #000000;
+    --border-subtle: #3A2B45;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B8B0C4;
+    --text-muted: #837593;
+    --shadow-hard: 3px 3px 0 #000000;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,7 +47,7 @@ body {
     top: 0;
     z-index: 100;
 }
-body.dark-theme .dash-navbar { background-color: rgba(23, 17, 27, 0.95); }
+body.dark .dash-navbar { background-color: rgba(23, 17, 27, 0.95); }
 .nav-container {
     max-width: 1320px; margin: 0 auto; padding: 10px 24px;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -79,8 +79,8 @@ body.dark-theme .dash-navbar { background-color: rgba(23, 17, 27, 0.95); }
 .theme-toggle-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 .theme-icon-sun { display: none; }
 .theme-icon-moon { display: block; }
-body.dark-theme .theme-icon-sun { display: block; }
-body.dark-theme .theme-icon-moon { display: none; }
+body.dark .theme-icon-sun { display: block; }
+body.dark .theme-icon-moon { display: none; }
 .user-email-pill {
     padding: 6px 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--border-subtle);
     font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);

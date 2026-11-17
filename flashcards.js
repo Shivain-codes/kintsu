@@ -121,11 +121,18 @@ function renderStacks() {
 
 function initLibrary() {
     const user = JSON.parse(localStorage.getItem('kintsu_user') || '{}');
+    if (!user.email) {
+        window.location.href = 'signin.html';
+        return;
+    }
     if (user.email) {
         const tag = document.getElementById('userEmailTag');
         if (tag) tag.textContent = user.email;
     }
     const themeBtn = document.getElementById('flashThemeToggle');
+    const savedTheme = localStorage.getItem('kintsu_theme');
+    const startDark = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', startDark);
     if (themeBtn) {
         themeBtn.onclick = () => {
             const isDark = document.body.classList.toggle('dark');

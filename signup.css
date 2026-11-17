@@ -84,12 +84,6 @@
     height: 1px;
 }
 
-#googleBtn {
-    width: 100%;
-    height: 44px;
-    cursor: pointer;
-}
-
 .submit {
     width: 100%;
     height: 44px;
@@ -216,24 +210,6 @@ a {
     color: var(--muted);
 }
 
-#googleBtn {
-    background: var(--card-bg);
-    border: 2px solid var(--ink);
-    border-radius: 12px;
-    box-shadow: 4px 4px 0 var(--ink);
-    color: var(--ink);
-}
-
-#googleBtn:hover {
-    background: var(--ink);
-    color: var(--card-bg);
-}
-
-#googleBtn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--ink);
-}
-
 .foot-text {
     color: var(--muted);
 }
@@ -323,12 +299,6 @@ body {
     letter-spacing: 0.08em;
 }
 
-#googleBtn {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 13px;
-}
-
 .foot-text {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -409,4 +379,57 @@ body.dark .theme-icon-moon { display: none; }
     background: #ffd84d;
     width: 48px; height: 46px; padding: 0;
     color: #000000;
+}
+
+.google-signin {
+    display: flex;
+    justify-content: center;
+    min-height: 44px;
+}
+
+.members {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 2px solid var(--ink);
+}
+
+.members-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.members-note {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.members-list {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+    padding: 0;
+}
+
+.members-list li {
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+.member-name {
+    display: block;
+    font-weight: 800;
+}
+
+.member-meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
 }

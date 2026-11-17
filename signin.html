@@ -40,7 +40,8 @@
                 <p class="subtitle">Kintsu &middot;</p>
             </div>
 
-            <form class="form" id="signinForm" method="POST">
+            <p class="form-error" id="signinError" role="alert" hidden></p>
+            <form class="form" id="signinForm" method="POST" novalidate>
                 <label class="label">
                     <span class="label-text">EMAIL</span>
                     <input class="input" type="email" name="email" required placeholder="name@domain.com" autocomplete="email">
@@ -60,7 +61,7 @@
                 <span class="divider-line"></span>
             </div>
 
-            <button type="button" id="googleBtn">Continue with Google</button>
+            <div id="googleSignIn" class="google-signin"></div>
 
             <div class="foot">
                 <span class="foot-text">New here?</span>
@@ -70,6 +71,7 @@
         </div>
     </main>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="script.js"></script>
 </body>
 </html>

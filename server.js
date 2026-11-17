@@ -66,6 +66,7 @@ app.get('/stats', async (req, res) => {
 });
 
 app.use('/api/notes', require('./routes/notes'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/mongo/users', require('./routes/mongoUsers'));
 app.use('/api/flashcards', require('./routes/flashcards'));

@@ -1,33 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
 const User = require('../models/User');
 const { isConnected } = require('../config/db');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-
-function readUsersFromFile() {
-    try {
-        if (!fs.existsSync(USERS_FILE)) return [];
-        return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8') || '[]');
-    } catch (e) {
-        return [];
-    }
-}
-
-function writeUsersToFile(users) {
-    try {
-        if (!fs.existsSync(DATA_DIR)) {
-            fs.mkdirSync(DATA_DIR, { recursive: true });
-        }
-        fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
-    } catch (e) {
-        console.error('[Storage] Error writing users.json:', e);
-    }
-}
-
+const { readUsersFromFile, writeUsersToFile, withoutPassword } = require('../config/userFile');
 router.get('/', async (req, res) => {
     try {
         if (isConnected()) {
@@ -35,7 +11,8 @@ router.get('/', async (req, res) => {
             return res.json({ success: true, count: users.length, data: users });
         }
         const fileUsers = readUsersFromFile();
-        res.json({ success: true, count: fileUsers.length, data: fileUsers });
+        const safeUsers = fileUsers.map(withoutPassword);
+        res.json({ success: true, count: safeUsers.length, data: safeUsers });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -69,7 +46,9 @@ router.post('/', async (req, res) => {
         const fileUsers = readUsersFromFile();
         const existingIdx = fileUsers.findIndex(u => u.email === email.toLowerCase().trim());
         if (existingIdx >= 0) {
-            fileUsers[existingIdx] = savedUser;
+            const plain = JSON.parse(JSON.stringify(savedUser));
+            if (fileUsers[existingIdx].passwordHash) plain.passwordHash = fileUsers[existingIdx].passwordHash;
+            fileUsers[existingIdx] = plain;
         } else {
             fileUsers.push(savedUser);
         }
@@ -82,4 +61,34 @@ router.post('/', async (req, res) => {
     }
 });
 
+function findIndexById(users, id) {
+    return users.findIndex(u => u.id === id || u._id === id);
+}
+router.put('/:id', (req, res) => {
+    const users = readUsersFromFile();
+    const i = findIndexById(users, req.params.id);
+    if (i < 0) return res.status(404).json({ success: false, error: 'User not found' });
+    const { email, username } = req.body || {};
+    if (email !== undefined) {
+        const cleanEmail = String(email).toLowerCase().trim();
+        if (!cleanEmail.includes('@')) {
+            return res.status(400).json({ success: false, error: 'Valid email is required.' });
+        }
+        if (users.some((u, idx) => idx !== i && u.email === cleanEmail)) {
+            return res.status(400).json({ success: false, error: 'That email is already registered' });
+        }
+        users[i].email = cleanEmail;
+    }
+    if (username !== undefined) users[i].username = String(username).trim();
+    writeUsersToFile(users);
+    res.json({ success: true, data: withoutPassword(users[i]) });
+});
+router.delete('/:id', (req, res) => {
+    const users = readUsersFromFile();
+    const i = findIndexById(users, req.params.id);
+    if (i < 0) return res.status(404).json({ success: false, error: 'User not found' });
+    const [deleted] = users.splice(i, 1);
+    writeUsersToFile(users);
+    res.json({ success: true, deleted: withoutPassword(deleted) });
+});
 module.exports = router;

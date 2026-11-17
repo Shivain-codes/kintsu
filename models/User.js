@@ -14,6 +14,13 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Username is required'],
         trim: true
     },
+    googleId: {
+        type: String
+    },
+    passwordHash: {
+        type: String,
+        select: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

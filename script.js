@@ -18,19 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem(key, value);
         } catch (e) {}
     }
-    var darkToggle = document.getElementById('darkToggle'), savedTheme = safeGetStorage('kintsu_theme');
-    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.body.classList.add('dark');
-        document.documentElement.classList.add('dark');
-    }
-    if (darkToggle) {
-        darkToggle.addEventListener('click', function () {
-            document.body.classList.toggle('dark');
-            document.documentElement.classList.toggle('dark');
-            var isDark = document.body.classList.contains('dark');
-            safeSetStorage('kintsu_theme', isDark ? 'dark' : 'light');
-            showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled', 1800);
-        });
+    const themeBtn = document.getElementById('darkToggle');
+    const savedTheme = localStorage.getItem('kintsu_theme');
+    const startDark = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', startDark);
+    if (themeBtn) {
+        themeBtn.onclick = () => {
+            const isDark = document.body.classList.toggle('dark');
+            localStorage.setItem('kintsu_theme', isDark ? 'dark' : 'light');
+        };
     }
     var selectableText = document.getElementById('selectableText'), selectionPopup = document.getElementById('selectionPopup'), btnCreateFlashcard = document.getElementById('btnCreateFlashcard'), btnDismissFlashcard = document.getElementById('btnDismissFlashcard'), synthesisBanner = document.getElementById('synthesisBanner'), flashcardDeck = document.getElementById('flashcardDeck'), FULL_DEMO_TEXT = "Modern LLMs rely on Transformer self-attention to process entire sequences in parallel. Unlike sequential RNNs, Multi-Head Attention allows tokens to dynamically attend to contextual relationships across distant words. Scaled Dot-Product Attention computes query-key affinity scores normalized by the square root of the head dimension.", DEFAULT_HIGHLIGHT = "Scaled Dot-Product Attention computes query-key affinity scores normalized by the square root of the head dimension.", isUserInteracted = false, autoDemoTimer = null, autoStepTimeout = null;
     function renderDemoText(highlightPhrase) {
@@ -734,51 +730,92 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var email = emailInput ? emailInput.value.trim() : '', password = passwordInput ? passwordInput.value : '';
 
+            var errorBox = document.getElementById('signinError');
+            function showSigninError(message, withSignupLink) {
+                if (!errorBox) { alert(message); return; }
+                errorBox.textContent = message + ' ';
+                if (withSignupLink) {
+                    var link = document.createElement('a');
+                    link.href = 'signup.html';
+                    link.textContent = 'Create an account';
+                    errorBox.appendChild(link);
+                }
+                errorBox.hidden = false;
+            }
+            if (errorBox) { errorBox.textContent = ''; errorBox.hidden = true; }
             if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address.');
+                showSigninError('Please enter a valid email address.');
                 if (emailInput) emailInput.focus();
                 return;
             }
-
             if (!password || password.length < 4) {
-                alert('Password must be at least 4 characters long.');
+                showSigninError('Password must be at least 4 characters long.');
                 if (passwordInput) passwordInput.focus();
                 return;
             }
-
-            var username = email.split('@')[0], userRecord = { email: email, username: username };
-
-            safeSetStorage('kintsu_user', JSON.stringify(userRecord));
-
-            if (window.fetch) {
-                fetch('/api/users', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userRecord)
-                }).catch(function () {});
-            }
-
-            if (submitBtn) {
-                isSigningIn = true;
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'SIGNING IN...';
-                setTimeout(function () {
-                    submitBtn.textContent = '✓ SUCCESS';
-                    setTimeout(function () { window.location.href = 'dashboard.html'; }, 400);
-                }, 500);
-            }
+            isSigningIn = true;
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'SIGNING IN...'; }
+            fetch('/api/auth/signin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
+            }).then(function (res) {
+                return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+            }).then(function (result) {
+                if (!result.ok) {
+                    var notFound = result.data.code === 'NO_ACCOUNT';
+                    var msg = notFound ? 'No account exists for this email. Please create one first.' : (result.data.error || 'Could not sign in.');
+                    throw { message: msg, withLink: notFound || result.data.code === 'NO_PASSWORD' };
+                }
+                safeSetStorage('kintsu_user', JSON.stringify({ email: result.data.data.email, username: result.data.data.username }));
+                if (submitBtn) submitBtn.textContent = '\u2713 SUCCESS';
+                setTimeout(function () { window.location.href = 'dashboard.html'; }, 400);
+            }).catch(function (err) {
+                isSigningIn = false;
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'SIGN IN'; }
+                if (err instanceof TypeError) showSigninError('Could not reach the server.');
+                else showSigninError(err.message, err.withLink);
+            });
         });
     }
-
-    var googleBtn = document.getElementById('googleBtn');
-    if (googleBtn) {
-        googleBtn.addEventListener('click', function () {
-            var demoUser = { email: 'student@kintsu.edu', username: 'student' };
-            safeSetStorage('kintsu_user', JSON.stringify(demoUser));
-            googleBtn.textContent = 'CONNECTING...';
-            setTimeout(function () {
-                window.location.href = 'dashboard.html';
-            }, 300);
+    var currentUser = null;
+    try { currentUser = JSON.parse(safeGetStorage('kintsu_user') || 'null'); } catch (e) {}
+    if (currentUser && currentUser.email) {
+        document.querySelectorAll('a[href="signin.html"]').forEach(function (a) {
+            a.setAttribute('href', 'dashboard.html');
+            if (a.closest('.nav-actions')) a.textContent = currentUser.username || 'Dashboard';
+            else if (a.classList.contains('workspace-save-btn')) a.textContent = 'Save to your dashboard';
+            else if (a.classList.contains('sticky-signup-btn')) a.textContent = 'Dashboard';
         });
+    }
+    var googleHolder = document.getElementById('googleSignIn');
+    if (googleHolder) {
+        var googleErrorBox = document.getElementById('signinError');
+        var onGoogleCredential = function (response) {
+            fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ credential: response.credential })
+            }).then(function (res) {
+                return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+            }).then(function (result) {
+                if (!result.ok) throw new Error(result.data.error || 'Google sign-in failed.');
+                safeSetStorage('kintsu_user', JSON.stringify({ email: result.data.data.email, username: result.data.data.username }));
+                window.location.href = 'dashboard.html';
+            }).catch(function (err) {
+                if (googleErrorBox) { googleErrorBox.textContent = err.message; googleErrorBox.hidden = false; }
+            });
+        };
+        fetch('/api/auth/google-client-id').then(function (res) { return res.json(); }).then(function (cfg) {
+            var tries = 0;
+            (function renderWhenReady() {
+                if (window.google && google.accounts && cfg.clientId) {
+                    google.accounts.id.initialize({ client_id: cfg.clientId, callback: onGoogleCredential });
+                    google.accounts.id.renderButton(googleHolder, { theme: 'outline', size: 'large', text: 'continue_with', width: 320 });
+                } else if (tries++ < 50) {
+                    setTimeout(renderWhenReady, 100);
+                }
+            })();
+        }).catch(function () {});
     }
 });

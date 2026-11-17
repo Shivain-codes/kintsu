@@ -23,26 +23,25 @@ const boardSelect = document.getElementById('noteBoardSelect');
 
 function initApp() {
     const user = JSON.parse(localStorage.getItem('kintsu_user') || '{}');
+    if (!user.email) {
+        window.location.href = 'signin.html';
+        return;
+    }
     if (user.username) {
         document.getElementById('welcomeUserPill').textContent = user.username;
         document.getElementById('userEmailTag').textContent = user.email || user.username;
     }
 
     const themeBtn = document.getElementById('dashThemeToggle');
-    if (themeBtn) {
-        const savedTheme = localStorage.getItem('kintsu_theme');
-        const startLight = savedTheme === 'light';
-        document.body.classList.toggle('light-theme', startLight);
-        document.body.classList.toggle('dark-theme', !startLight);
-    }
+    const savedTheme = localStorage.getItem('kintsu_theme');
+    const startDark = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', startDark);
     if (themeBtn) {
         themeBtn.onclick = () => {
-            const isLight = document.body.classList.toggle('light-theme');
-            document.body.classList.toggle('dark-theme', !isLight);
-            localStorage.setItem('kintsu_theme', isLight ? 'light' : 'dark');
+            const isDark = document.body.classList.toggle('dark');
+            localStorage.setItem('kintsu_theme', isDark ? 'dark' : 'light');
         };
     }
-
     const signOutBtn = document.getElementById('signOutBtn');
     if (signOutBtn) {
         signOutBtn.onclick = () => {

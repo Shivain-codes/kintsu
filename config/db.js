@@ -7,7 +7,7 @@ async function connectDB() {
     try {
         mongoose.set('strictQuery', false);
         await mongoose.connect(uri, {
-            serverSelectionTimeoutMS: 2000 // Fast fail so startup is instant if offline
+            serverSelectionTimeoutMS: 8000
         });
         isMongoConnected = true;
         console.log(`[Database] MongoDB connected`);
