@@ -45,16 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     creating = true;
     if (btn) { btn.disabled = true; btn.textContent = 'CREATING...'; }
     try {
-      await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) });
+      await fetch('/api/mongo/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) });
     } catch {}
     if (btn) btn.textContent = '✓ ACCOUNT CREATED';
-    setTimeout(() => (location.href = 'index.html'), 400);
+    setTimeout(() => (location.href = 'signup.html'), 400);
   });
 
   // Continue with Google: demo only, NOT real OAuth.
   $('googleBtn')?.addEventListener('click', () => {
     set('kintsu_user', JSON.stringify({ email: 'student@kintsu.edu', username: 'student' }));
     $('googleBtn').textContent = 'CONNECTING...';
-    setTimeout(() => (location.href = 'index.html'), 300);
+    setTimeout(() => (location.href = 'signup.html'), 300);
   });
 });

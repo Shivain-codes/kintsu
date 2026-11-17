@@ -29,5 +29,18 @@
     "email": "h1@gmail.com",
     "username": "h1",
     "createdAt": "2026-10-29T16:51:44.330Z"
+  },
+  {
+    "id": "usr_1794915344828",
+    "email": "sihyeon@gmail.com",
+    "username": "sihyeon",
+    "createdAt": "2026-11-17T11:35:44.828Z"
+  },
+  {
+    "_id": "6afc3de1d4dca131f6090589",
+    "email": "rootcheck@kintsu.dev",
+    "__v": 0,
+    "createdAt": "2026-11-17T11:43:29.239Z",
+    "username": "rootcheck"
   }
 ]
