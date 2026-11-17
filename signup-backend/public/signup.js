@@ -1,7 +1,6 @@
 // Kintsu signup page (2nd evaluation) wired to the Express demo (3rd evaluation):
-// same validation, localStorage save and POST /api/users — then the saved users
-// and the external users are listed on this page. No dashboard in this demo:
-// after creating an account the user list reloads instead of redirecting.
+// same validation, localStorage save and POST /api/users. No dashboard in this demo:
+// after creating an account the button resets instead of redirecting.
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
   const get = k => { try { return localStorage.getItem(k); } catch { return null; } };
@@ -24,25 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (box) { box.textContent = msg; box.hidden = false; } else alert(msg);
     input?.focus();
   };
-
-  async function loadUsers() {
-    const res = await fetch('/api/users');
-    const users = await res.json();
-    $('userList').innerHTML = users.map(u => `<li>${u.username} — ${u.email}</li>`).join('');
-  }
-
-  // Fetched through our own server route, not directly: the page still works
-  // when the browser blocks cross-origin calls, and the server can shape the data.
-  async function loadExternalUsers() {
-    try {
-      const res = await fetch('/api/external/users');
-      if (!res.ok) throw new Error('External API failed');
-      const users = await res.json();
-      $('externalList').innerHTML = users.map(u => `<li>${u.name} — ${u.email}</li>`).join('');
-    } catch {
-      $('externalList').innerHTML = '<li>Could not load external users.</li>';
-    }
-  }
 
   // Create account form.
   let creating = false;
@@ -68,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) });
     } catch {}
     if (btn) btn.textContent = '✓ ACCOUNT CREATED';
-    loadUsers();
     setTimeout(() => {
       creating = false;
       if (btn) { btn.disabled = false; btn.textContent = 'CREATE ACCOUNT'; }
@@ -81,7 +60,4 @@ document.addEventListener('DOMContentLoaded', () => {
     $('googleBtn').textContent = 'CONNECTING...';
     setTimeout(() => { $('googleBtn').textContent = 'Continue with Google'; }, 300);
   });
-
-  loadUsers();
-  loadExternalUsers();
 });
