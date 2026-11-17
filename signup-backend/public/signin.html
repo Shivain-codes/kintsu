@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in · Kintsu</title>
+
+    <link rel="stylesheet" href="signin.css">
+</head>
+<body>
+
+    <!-- Header / Nav -->
+    <header class="header">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>KINTSU</a>
+        <div class="nav-right">
+            <a href="#">Dashboard</a>
+            <a href="#">Flashcards</a>
+            <button type="button" id="darkToggle">Toggle</button>
+            <a href="/signin.html">Sign in</a>
+        </div>
+    </header>
+
+    <!-- Sign in card -->
+    <main class="main">
+        <div class="card">
+
+            <div class="card-head">
+                <span class="badge">SIGN IN</span>
+                <h1 class="title">Welcome back</h1>
+                <p class="subtitle">Kintsu &middot;</p>
+            </div>
+
+            <form class="form" id="signinForm" method="POST">
+                <label class="label">
+                    <span class="label-text">EMAIL</span>
+                    <input class="input" type="email" name="email" required>
+                </label>
+
+                <label class="label">
+                    <span class="label-text">PASSWORD</span>
+                    <input class="input" type="password" name="password" required>
+                </label>
+
+                <button class="submit" type="submit">SIGN IN</button>
+            </form>
+
+            <div class="divider">
+                <span class="divider-line"></span>
+                <span class="divider-text">OR</span>
+                <span class="divider-line"></span>
+            </div>
+
+            <button type="button" id="googleBtn">Continue with Google</button>
+
+            <div class="foot">
+                <span class="foot-text">New here?</span>
+                <a class="create" href="#">Create an account</a>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
