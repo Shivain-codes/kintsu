@@ -21,6 +21,7 @@ Short points only. Every line below matches the code in this folder.
 
 ## The signup flow, end to end
 
+- The page is the real Kintsu signup page from the 2nd evaluation (signup.html + signup.css), with the All users and External users sections added.
 - User types email + password and submits the form.
 - `signup.js` checks: email must contain `@`, password must be 4+ characters.
   If not, it shows the error message and stops.
