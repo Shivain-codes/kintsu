@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kintsu — Create Account</title>
+<style>
+  body { font-family: sans-serif; max-width: 560px; margin: 40px auto; padding: 0 16px; }
+  input, button { display: block; width: 100%; margin: 8px 0; padding: 10px; font-size: 16px; }
+  #signupError { color: red; }
+  #okMsg { color: green; }
+</style>
+</head>
+<body>
+<h1>Create Account</h1>
+<form id="signupForm">
+  <input id="signupEmail" type="text" placeholder="Email address">
+  <input id="signupPassword" type="password" placeholder="Password (4+ characters)">
+  <p id="signupError" hidden></p>
+  <button class="submit" type="submit">Create Account</button>
+</form>
+<p id="okMsg" hidden></p>
+
+<h2>All users</h2>
+<ul id="userList"></ul>
+
+<h2>External users</h2>
+<ul id="externalList"></ul>
+
+<script src="signup.js"></script>
+</body>
+</html>
