@@ -21,7 +21,7 @@ Short points only. Every line below matches the code in this folder.
 
 ## The signup flow, end to end
 
-- The page is the real Kintsu signup page from the 2nd evaluation (signup.html + signup.css), with the All users and External users sections added.
+- The page is the real Kintsu signup page from the 2nd evaluation (signup.html + signup.css), unchanged.
 - User types email + password and submits the form.
 - `signup.js` checks: email must contain `@`, password must be 4+ characters.
   If not, it shows the error message and stops.
@@ -34,7 +34,7 @@ Short points only. Every line below matches the code in this folder.
   (keeps `id` and `createdAt`, refreshes `lastLogin`) or pushes a new user
   with `id: 'usr_' + Date.now()` and `createdAt`.
 - It writes the whole array back to `data/users.json` and answers 201.
-- The page then reloads the "All users" list with `GET /api/users`.
+- The button shows ✓ ACCOUNT CREATED. The saved users are shown by calling `GET /api/users`, and the external users by `GET /api/external/users`.
 - The password is checked only. It is never stored in the JSON file, never
   sent to MongoDB, and never sent anywhere else.
 
