@@ -28,10 +28,6 @@ function writeFlashcardsToFile(cards) {
     }
 }
 
-/**
- * @route   GET /api/flashcards
- * @desc    Get all flashcards
- */
 router.get('/', async (req, res) => {
     try {
         if (isConnected()) {
@@ -45,10 +41,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-/**
- * @route   POST /api/flashcards
- * @desc    Save one or multiple flashcards
- */
 router.post('/', async (req, res) => {
     try {
         const payload = req.body;
@@ -101,10 +93,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-/**
- * @route   DELETE /api/flashcards/:id
- * @desc    Delete a flashcard by ID
- */
 router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;

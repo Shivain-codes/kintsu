@@ -1,14 +1,8 @@
-// signup.js - Create Account page, standalone for signup.html only.
-// Same model as sign-in: no real auth. Password is checked (4+ chars)
-// but never stored or sent. User = { email, username } from the email
-// prefix, saved to localStorage (kintsu_user) + POST /api/users when
-// server.js runs (silent fail on static hosting). Google = demo user.
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
   const get = k => { try { return localStorage.getItem(k); } catch { return null; } };
   const set = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
-  // Theme: apply saved theme (or system dark), toggle saves it back.
   const theme = get('kintsu_theme');
   if (theme === 'dark' || (!theme && matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.body.classList.add('dark');
@@ -26,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     input?.focus();
   };
 
-  // Create account form.
   let creating = false;
   $('signupForm')?.addEventListener('submit', e => {
     e.preventDefault();

@@ -102,9 +102,9 @@
             <div style="margin-top: 12px;">
                 <strong>Database State:</strong> 
                 <% if (dbConnected) { %>
-                    <span style="color: #059669; font-weight: 700;">🟢 MongoDB Live (Mongoose ODM Connected)</span>
+                    <span style="color: #059669; font-weight: 700;">MongoDB Live (Mongoose ODM Connected)</span>
                 <% } else { %>
-                    <span style="color: #D97706; font-weight: 700;">🟡 Dual-Mode Fallback Active (Local JSON Disk Storage)</span>
+                    <span style="color: #D97706; font-weight: 700;">Dual-Mode Fallback Active (Local JSON Disk Storage)</span>
                 <% } %>
             </div>
         </div>
@@ -153,7 +153,7 @@
                                     <td><strong><%= note.title %></strong></td>
                                     <td><span class="pill-badge"><%= note.subject || 'General' %></span></td>
                                     <td><%= note.board || 'All Notes' %></td>
-                                    <td><%= note.pinned ? '📌 Yes' : 'No' %></td>
+                                    <td><%= note.pinned ? 'Yes' : 'No' %></td>
                                     <td style="font-size: 0.85rem; font-family: monospace;">
                                         <%= note.createdAt ? new Date(note.createdAt).toLocaleDateString() : 'N/A' %>
                                     </td>

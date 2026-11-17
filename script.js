@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.classList.toggle('dark');
             var isDark = document.body.classList.contains('dark');
             safeSetStorage('kintsu_theme', isDark ? 'dark' : 'light');
-            showToast(isDark ? 'Dark mode enabled 🌙' : 'Light mode enabled ☀️', 1800);
+            showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled', 1800);
         });
     }
     var selectableText = document.getElementById('selectableText'), selectionPopup = document.getElementById('selectionPopup'), btnCreateFlashcard = document.getElementById('btnCreateFlashcard'), btnDismissFlashcard = document.getElementById('btnDismissFlashcard'), synthesisBanner = document.getElementById('synthesisBanner'), flashcardDeck = document.getElementById('flashcardDeck'), FULL_DEMO_TEXT = "Modern LLMs rely on Transformer self-attention to process entire sequences in parallel. Unlike sequential RNNs, Multi-Head Attention allows tokens to dynamically attend to contextual relationships across distant words. Scaled Dot-Product Attention computes query-key affinity scores normalized by the square root of the head dimension.", DEFAULT_HIGHLIGHT = "Scaled Dot-Product Attention computes query-key affinity scores normalized by the square root of the head dimension.", isUserInteracted = false, autoDemoTimer = null, autoStepTimeout = null;
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () {
                 if (synthesisBanner) synthesisBanner.classList.remove('active');
                 cycleCardDeck();
-                showToast('✨ 3 Flashcards generated from lecture notes!', 3500);
+                showToast('3 Flashcards generated from lecture notes!', 3500);
             }, 1200);
         });
     }
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var url = ytUrlInput.value.trim();
             if (!url) {
                 ytUrlInput.setAttribute('aria-invalid', 'true');
-                showToast('Please enter a YouTube video URL ⚠️');
+                showToast('Please enter a YouTube video URL');
                 ytUrlInput.focus();
                 return;
             }
@@ -176,10 +176,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (videoId) {
                 ytUrlInput.removeAttribute('aria-invalid');
                 ytVideoPlayer.src = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?enablejsapi=1&rel=0&modestbranding=1';
-                showToast('Lecture video embedded successfully! 🎥');
+                showToast('Lecture video embedded successfully!');
             } else {
                 ytUrlInput.setAttribute('aria-invalid', 'true');
-                showToast('Invalid or unsupported YouTube URL ⚠️');
+                showToast('Invalid or unsupported YouTube URL');
                 ytUrlInput.focus();
             }
         });
@@ -255,14 +255,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         '<input class="toggle-topic-title" type="text" value="AI Synthesis: Key Takeaways (' + formatTime(currentLectureSeconds) + ')">' +
                     '</div>' +
                     '<div class="toggle-topic-content">' +
-                        '<p>✨ <strong>Automated Lecture Synthesis (Preview):</strong></p>' +
+                        '<p><strong>Automated Lecture Synthesis (Preview):</strong></p>' +
                         '<ul>' +
                             '<li>Deep representations learn hierarchical feature detectors automatically through gradient descent.</li>' +
                             '<li>Matrix operations leverage parallel SIMD and GPU tensors for high-throughput batching.</li>' +
                         '</ul>' +
                     '</div>';
                 editorCanvas.prepend(summarySection);
-                showToast('✨ AI Summary added to your notes!');
+                showToast('AI Summary added to your notes!');
             }, 1000);
         });
     }
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }), '*');
                 } catch (err) {}
             }
-            showToast('Seeking video to ' + formatTime(secs) + ' ⏩');
+            showToast('Seeking video to ' + formatTime(secs));
         }
     });
     function setupFormatCommand(btnId, command, value) {
@@ -364,7 +364,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     pendingSelectionRange.insertNode(mark);
                 } catch (err) { document.execCommand('hiliteColor', false, 'rgba(236, 50, 159, 0.85)'); }
 
-                // Save to Flashcard Library (localStorage)
                 try {
                     var currentStacks = JSON.parse(localStorage.getItem('kintsu_flashcards') || '[]');
                     var newStack = {
@@ -390,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } catch (e) {}
             }
             hideWorkspaceBubble();
-            showToast('✨ 3 AI Flashcards created & saved to Library!', 3500);
+            showToast('3 AI Flashcards created & saved to Library!', 3500);
             cycleCardDeck();
         });
     }
@@ -405,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', hideWorkspaceBubble, { passive: true });
     var cmdVoice = document.getElementById('cmdVoice');
     if (cmdVoice) {
-        cmdVoice.addEventListener('click', function () { showToast('🎙️ Voice-to-text listening… (Dictation simulation)'); });
+        cmdVoice.addEventListener('click', function () { showToast('Voice-to-text listening… (Dictation simulation)'); });
     }
     var btnInsertCodeBlock = document.getElementById('btnInsertCodeBlock');
     if (btnInsertCodeBlock && editorCanvas) {
@@ -414,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pre.style.cssText = 'background:#0e0a15; color:#7ad1f5; border:2px solid var(--ink); border-radius:8px; padding:12px; margin:12px 0; font-family:var(--font-mono);';
             pre.textContent = 'function calculateActivation(z) {\n  return 1 / (1 + Math.exp(-z));\n}';
             editorCanvas.appendChild(pre);
-            showToast('Code block inserted into notes 💻');
+            showToast('Code block inserted into notes');
         });
     }
     document.addEventListener('click', function (e) {
@@ -450,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var code = embeddedCodeInput ? embeddedCodeInput.value.trim() : '';
             if (!code) {
                 embeddedTerminalOutput.textContent = '[Diagnostic Output]\nError: Sandbox code input is empty. Write code to execute.';
-                showToast('Sandbox code editor is empty ⚠️');
+                showToast('Sandbox code editor is empty');
                 return;
             }
             isRunningEmbedded = true;
@@ -475,11 +474,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     result.output + '\n' +
                     '-------------------------------------------\n' +
                     '[Process completed with exit code ' + (result.success ? 0 : 1) + ']';
-                showToast(result.success ? 'Code executed successfully! ✅' : 'Execution finished with errors ⚠️');
+                showToast(result.success ? 'Code executed successfully!' : 'Execution finished with errors');
             })
             .catch(function (err) {
                 embeddedTerminalOutput.textContent = '[Execution Error]\n' + err.message;
-                showToast('Execution error ⚠️');
+                showToast('Execution error');
             })
             .finally(function () {
                 isRunningEmbedded = false;
@@ -499,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var code = fullCodeInput ? fullCodeInput.value.trim() : '';
             if (!code) {
                 fullCodeTerminalOutput.textContent = '[Diagnostic Output]\nError: Code editor is empty. Enter code to execute.';
-                showToast('Code workspace is empty ⚠️');
+                showToast('Code workspace is empty');
                 return;
             }
             isRunningFullCode = true;
@@ -524,11 +523,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     result.output + '\n' +
                     '-------------------------------------------\n' +
                     '[Finished with exit code ' + (result.success ? 0 : 1) + ']';
-                showToast(result.success ? 'Ran code successfully! ✅' : 'Runtime error in code ⚠️');
+                showToast(result.success ? 'Ran code successfully!' : 'Runtime error in code');
             })
             .catch(function (err) {
                 fullCodeTerminalOutput.textContent = '[Execution Error]\n' + err.message;
-                showToast('Execution error ⚠️');
+                showToast('Execution error');
             })
             .finally(function () {
                 isRunningFullCode = false;
@@ -677,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     feedbackFormStatus.textContent = 'Please enter your message before sending.';
                     feedbackFormStatus.className = 'feedback-status-msg feedback-status-error';
                 }
-                showToast('Please type a message before submitting ✍️');
+                showToast('Please type a message before submitting');
                 if (feedbackText) feedbackText.focus();
                 return;
             }
@@ -698,7 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             setTimeout(function () {
-                showToast('Feedback noted (' + category + ' • ' + rating + '★)! Thank you 🙌', 4000);
+                showToast('Feedback noted (' + category + ' • ' + rating + '★)! Thank you', 4000);
                 if (feedbackFormStatus) {
                     feedbackFormStatus.textContent = 'Thank you! Your feedback has been received anonymously for this demo session.';
                     feedbackFormStatus.className = 'feedback-status-msg feedback-status-success';

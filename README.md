@@ -5,7 +5,7 @@
 
 ---
 
-## 🚀 Quickstart & How to Run
+## Quickstart & How to Run
 
 ### Prerequisites
 - Node.js (v18 or higher recommended)
@@ -43,7 +43,7 @@ Open your browser to:
 
 ---
 
-## 🏛️ A3 Full-Stack Architecture & Rubric Mapping
+## A3 Full-Stack Architecture & Rubric Mapping
 
 | Rubric Criteria | Weightage | Implementation in Kintsu |
 | :--- | :---: | :--- |
@@ -55,7 +55,7 @@ Open your browser to:
 
 ---
 
-## 📡 REST API Reference
+## REST API Reference
 
 ### 1. Study Notes API (`/api/notes`)
 - `GET /api/notes`: Retrieve all saved notes (sorted by pinned status and timestamp).
@@ -74,7 +74,7 @@ Open your browser to:
 
 ---
 
-## 💾 Dual-Mode Persistence Architecture (Evaluation Safety)
+## Dual-Mode Persistence Architecture (Evaluation Safety)
 
 ```
                        ┌──────────────────────┐
@@ -100,7 +100,7 @@ This guarantees that whether your teacher evaluates the project with MongoDB run
 
 ---
 
-## 👥 Contributors & Team Matrix
+## Contributors & Team Matrix
 
 - **Pranav Agarwal** (`@agarwalpranav0711`) — **Project Lead**: Architecture, Express.js Backend, Mongoose ODM Integration, EJS Template Engine, Full-CRUD APIs, System Integration.
 - **Aditya** (`@aditya2006magic`) — Code Execution Sandbox & Core Client Layout.

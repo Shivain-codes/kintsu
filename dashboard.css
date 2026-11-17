@@ -1,6 +1,3 @@
-/* ================================================================
-   KINTSU STUDY VAULT DASHBOARD (COMPACT NEO-BRUTALIST STYLING)
-================================================================ */
 
 :root {
     --bg-page: #17111B;
@@ -42,7 +39,6 @@ body {
     transition: background-color 0.2s ease;
 }
 
-/* --- NAV BAR --- */
 .dash-navbar {
     border-bottom: 3px solid var(--border-ink);
     background-color: rgba(255, 242, 251, 0.95);
@@ -98,7 +94,6 @@ body.dark-theme .theme-icon-moon { display: none; }
 .sign-out-btn:hover { transform: translate(-1.5px, -1.5px); box-shadow: 6px 6px 0 var(--border-ink); }
 .sign-out-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-ink); }
 
-/* --- HERO VAULT SECTION --- */
 .dash-container { max-width: 1400px; margin: 0 auto; padding: 24px 28px 120px 28px; }
 .vault-hero {
     display: flex; align-items: flex-start; justify-content: space-between;
@@ -126,7 +121,6 @@ body.dark-theme .theme-icon-moon { display: none; }
 .btn-vault-action.primary-create { background: #FFF; color: #18121E; }
 .btn-vault-action.export-json-btn { background: var(--accent-yellow); color: #18121E; }
 
-/* --- SIDEBAR & NOTES GRID LAYOUT --- */
 .dash-layout { display: grid; grid-template-columns: 220px 1fr; gap: 28px; }
 .sidebar-head { display: flex; justify-content: space-between; margin-bottom: 14px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
 .boards-sidebar { background: var(--bg-card); border: 2px solid var(--border-ink); border-radius: 20px; box-shadow: var(--shadow-hard); padding: 14px; height: fit-content; }
@@ -148,7 +142,6 @@ body.dark-theme .theme-icon-moon { display: none; }
 .count-pill { font-family: var(--font-mono); font-size: 16px; color: var(--text-muted); }
 .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px; }
 
-/* --- NOTE CARD --- */
 .note-card {
     background: var(--bg-card); border: 2px solid var(--border-ink); border-radius: var(--radius-card);
     box-shadow: var(--shadow-hard); overflow: hidden; display: flex; flex-direction: column;
@@ -176,7 +169,6 @@ body.dark-theme .theme-icon-moon { display: none; }
 }
 .btn-card-open:hover { background: #FFF; color: #18121E; }
 
-
 .quick-start-widget {
     position: fixed; bottom: 20px; right: 20px; width: 320px; background: var(--bg-card);
     border: 2px solid var(--border-ink); border-radius: 16px; box-shadow: var(--shadow-hard); z-index: 45; padding: 14px;
@@ -190,7 +182,6 @@ body.dark-theme .theme-icon-moon { display: none; }
 }
 .qs-footer-hint { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px; }
 
-/* --- MODAL FORMS --- */
 .modal-backdrop {
     position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
     display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px;

@@ -8,7 +8,6 @@ const { isConnected } = require('../config/db');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const NOTES_FILE = path.join(DATA_DIR, 'notes.json');
 
-// Helper to read notes from JSON fallback
 function readNotesFromFile() {
     try {
         if (!fs.existsSync(NOTES_FILE)) return [];
@@ -19,7 +18,6 @@ function readNotesFromFile() {
     }
 }
 
-// Helper to write notes to JSON fallback
 function writeNotesToFile(notes) {
     try {
         if (!fs.existsSync(DATA_DIR)) {
@@ -31,10 +29,6 @@ function writeNotesToFile(notes) {
     }
 }
 
-/**
- * @route   GET /api/notes
- * @desc    Get all study notes (from MongoDB or JSON fallback)
- */
 router.get('/', async (req, res) => {
     try {
         if (isConnected()) {
@@ -42,7 +36,6 @@ router.get('/', async (req, res) => {
             return res.json({ success: true, count: mongoNotes.length, source: 'mongodb', data: mongoNotes });
         }
         const fileNotes = readNotesFromFile();
-        // Sort: pinned first, then newest first
         fileNotes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
         res.json({ success: true, count: fileNotes.length, source: 'json-fallback', data: fileNotes });
     } catch (err) {
@@ -52,15 +45,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-/**
- * @route   POST /api/notes
- * @desc    Create a new study note with server-side validation
- */
 router.post('/', async (req, res) => {
     try {
         const { title, subject, body, board, color, tags, youtubeUrl, pinned } = req.body;
 
-        // Server-side validation
         if (!title || typeof title !== 'string' || title.trim().length < 3) {
             return res.status(400).json({
                 success: false,
@@ -106,7 +94,6 @@ router.post('/', async (req, res) => {
             };
         }
 
-        // Keep local JSON backup synchronized for evaluation demonstration
         const fileNotes = readNotesFromFile();
         fileNotes.unshift(newNote);
         writeNotesToFile(fileNotes);
@@ -122,10 +109,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-/**
- * @route   PATCH /api/notes/:id/pin
- * @desc    Toggle pin status of a note
- */
 router.patch('/:id/pin', async (req, res) => {
     try {
         const id = req.params.id;
@@ -140,7 +123,6 @@ router.patch('/:id/pin', async (req, res) => {
             }
         }
 
-        // Also update JSON file
         const fileNotes = readNotesFromFile();
         const found = fileNotes.find(n => (n._id && n._id.toString() === id) || n.id === id);
         if (found) {
@@ -160,10 +142,6 @@ router.patch('/:id/pin', async (req, res) => {
     }
 });
 
-/**
- * @route   DELETE /api/notes/:id
- * @desc    Delete a study note by ID
- */
 router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
@@ -174,7 +152,6 @@ router.delete('/:id', async (req, res) => {
             if (result) deleted = true;
         }
 
-        // Also remove from JSON file
         const fileNotes = readNotesFromFile();
         const initialLength = fileNotes.length;
         const filtered = fileNotes.filter(n => (n._id && n._id.toString() !== id) && n.id !== id);

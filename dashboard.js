@@ -1,12 +1,3 @@
-/**
- * Kintsu Study Vault - Dashboard Logic (Compact & Easy to Explain)
- * 1. User Profile & Theme Toggle
- * 2. Data Loading & Dual JSON Persistence (localStorage + data/notes.json)
- * 3. Dynamic Note Card Rendering
- * 4. Form Validation & Submission (New Note)
- * 5. One-Click JSON Export (Evaluation Parameter 4)
- * 6. Modal Controls & Note Deletion
- */
 
 let notes = [];
 let currentBoard = 'All Notes';
@@ -19,7 +10,6 @@ try {
 } catch (e) { customBoards = []; }
 let selectedBoardColor = '#F472B6';
 
-// DOM Elements
 const notesGrid = document.getElementById('notesGrid');
 const emptyState = document.getElementById('emptyState');
 const notesCount = document.getElementById('notesSectionCount');
@@ -31,7 +21,6 @@ const titleError = document.getElementById('titleError');
 const videoError = document.getElementById('videoError');
 const boardSelect = document.getElementById('noteBoardSelect');
 
-// 1. SETUP: User Name, Theme Toggle, & Banner
 function initApp() {
     const user = JSON.parse(localStorage.getItem('kintsu_user') || '{}');
     if (user.username) {
@@ -65,7 +54,6 @@ function initApp() {
     loadNotes();
 }
 
-// 2. DATA LAYER: Load from Express API (/api/notes) with MongoDB & local cache
 function loadNotes() {
     fetch('/api/notes')
         .then(res => res.json())
@@ -100,7 +88,6 @@ function loadNotes() {
         });
 }
 
-// Save notes to localStorage
 function saveNotes() {
     localStorage.setItem('kintsu_notes', JSON.stringify(notes, null, 2));
 }
@@ -213,7 +200,7 @@ function renderNotes() {
         const coverBg = note.coverTheme === 'python' ? '#1e293b' : '#130d1a';
         const checkboxHtml = selectMode ? '<button type="button" class="select-checkbox" onclick="event.stopPropagation(); toggleNoteSelection(\'' + note.id + '\')" title="Select note">' + (selectedNotes.has(note.id) ? '&#10003;' : '') + '</button>' : '';
         const hintHtml = selectMode ? '<span class="select-hint">' + (selectedNotes.has(note.id) ? '&#10003; selected' : 'tap to select') + '</span>' : '';
-        const actionsHtml = selectMode ? '' : '<div class="card-actions-group"><button type="button" class="btn-card-pin" onclick="togglePinNote(\'' + note.id + '\')" title="' + (note.pinned ? 'Unpin note' : 'Pin note') + '">' + (note.pinned ? '📌' : '📍') + '</button><button type="button" class="btn-card-delete" onclick="deleteNote(\'' + note.id + '\')" title="Delete note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button><a href="index.html#workspace" class="btn-card-open" onclick="openNote(\'' + note.id + '\')" title="Open in Workspace"><span>Open</span> <span>\u2197</span></a></div>';
+        const actionsHtml = selectMode ? '' : '<div class="card-actions-group"><button type="button" class="btn-card-pin" onclick="togglePinNote(\'' + note.id + '\')" title="' + (note.pinned ? 'Unpin note' : 'Pin note') + '">' + (note.pinned ? '\u2605' : '\u2606') + '</button><button type="button" class="btn-card-delete" onclick="deleteNote(\'' + note.id + '\')" title="Delete note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button><a href="index.html#workspace" class="btn-card-open" onclick="openNote(\'' + note.id + '\')" title="Open in Workspace"><span>Open</span> <span>\u2197</span></a></div>';
 
         card.innerHTML = `
             ${checkboxHtml}
@@ -245,7 +232,6 @@ window.openNote = function (id) {
     if (note) localStorage.setItem('kintsu_active_note', JSON.stringify(note));
 };
 
-// Toggle Pin Note (calls PATCH /api/notes/:id/pin)
 window.togglePinNote = function (id) {
     const note = notes.find(n => n.id === id || (n._id && n._id.toString() === id));
     if (note) {
@@ -259,7 +245,6 @@ window.togglePinNote = function (id) {
     }
 };
 
-// Delete Note (calls DELETE /api/notes/:id)
 window.deleteNote = function (id) {
     notes = notes.filter(n => n.id !== id && (!n._id || n._id.toString() !== id));
     saveNotes();
@@ -361,7 +346,6 @@ if (batchMoveSelect) {
     };
 }
 
-// 4. FORM VALIDATION & SUBMISSION: Add Note (restored for Evaluation Parameters 2 and 3)
 function refreshModalBoardOptions() {
     if (!boardSelect) return;
     const boards = getBoards();
@@ -456,7 +440,6 @@ if (createForm) {
     };
 }
 
-// Modal controls
 const openCreateNoteModalBtn = document.getElementById('openCreateNoteModalBtn');
 if (openCreateNoteModalBtn) openCreateNoteModalBtn.onclick = openCreateNoteModal;
 const closeCreateModalBtn = document.getElementById('closeCreateModalBtn');
@@ -464,7 +447,6 @@ if (closeCreateModalBtn) closeCreateModalBtn.onclick = () => { modal.style.displ
 const cancelCreateModalBtn = document.getElementById('cancelCreateModalBtn');
 if (cancelCreateModalBtn) cancelCreateModalBtn.onclick = () => { modal.style.display = 'none'; };
 
-// 5. EVALUATION PARAMETER 4: Export Saved Notes to JSON File
 const exportBtn = document.getElementById('exportJsonBtn');
 if (exportBtn) {
     exportBtn.onclick = () => {

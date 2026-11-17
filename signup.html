@@ -5,17 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create an account · Kintsu</title>
 
-    <!-- Own stylesheet for the sign-up page (same Kintsu look as
-         sign-in, plus the .form-error style). -->
     <link rel="stylesheet" href="signup.css">
 </head>
 <body>
 
-    <!-- Header / Nav - same as Pratishtha's dashboard nav
-         (dash-navbar, as on dashboard.html and signin.html).
-         Only change: no Guest/Sign out here, since nobody is
-         logged in yet on a create-account page — the last pill
-         is Sign in instead. -->
     <header class="dash-navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand" title="Return to Home">
@@ -26,9 +19,6 @@
             </a>
 
             <nav class="nav-pill-actions">
-                <!-- Dashboard / Workspace / Flashcards removed on purpose:
-                     not needed on a create-account page, nobody is logged
-                     in yet. Only logo, theme toggle and Sign in remain. -->
                 <button type="button" class="theme-toggle-btn" id="darkToggle" aria-label="Toggle dark mode">
                     <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
                     <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
@@ -38,7 +28,6 @@
         </div>
     </header>
 
-    <!-- Create account card -->
     <main class="main">
         <div class="card">
 
@@ -48,8 +37,6 @@
                 <p class="subtitle">Kintsu &middot;</p>
             </div>
 
-            <!-- The form is handled by signup.js, not by a server post.
-                 See signup.js for validation and saving. -->
             <form class="form" id="signupForm" method="POST" novalidate>
 
                 <label class="label">

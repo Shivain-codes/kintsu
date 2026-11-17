@@ -1,9 +1,3 @@
-/**
- * Kintsu Flashcard Library
- * Loads stacks from localStorage (kintsu_flashcards), renders them,
- * updates STACKS / CARDS counts, filters by search and sorts by date or name.
- * With no stacks saved, the empty state stays visible, as in the prototype.
- */
 let stacks = [];
 const DEFAULT_STUDY_STACKS = [
     {
@@ -190,7 +184,6 @@ function initLibrary() {
     const asEl = document.getElementById("feedbackAs");
     if (asEl && user.email) asEl.textContent = "Sending as " + user.email;
 
-    // Create Flashcard Modal Handlers
     const createModal = document.getElementById("createFlashcardModal");
     const openCreateBtn = document.getElementById("openCreateFlashcardBtn");
     const closeCreateBtn = document.getElementById("closeCreateCardModal");
@@ -257,7 +250,6 @@ function initLibrary() {
                 localStorage.setItem("kintsu_flashcards", JSON.stringify(stacks));
             } catch (err) {}
 
-            // Sync to MongoDB via Express API
             if (window.fetch) {
                 fetch('/api/flashcards', {
                     method: 'POST',
@@ -277,7 +269,6 @@ function initLibrary() {
 
     renderStacks();
 
-    // Auto-sync initial stacks to server MongoDB/JSON storage
     if (window.fetch) {
         fetch('/api/flashcards')
             .then(r => r.json())

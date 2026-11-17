@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 
-/* Header: brand left, nav right */
 .header {
     display: flex;
     align-items: center;
@@ -20,7 +19,6 @@
     text-decoration: none;
 }
 
-/* Logo mark: pink/black sticker circle (pure CSS) */
 .brand-mark {
     width: 30px;
     height: 30px;
@@ -37,7 +35,6 @@
     gap: 10px;
 }
 
-/* Main area: center the card */
 .main {
     display: flex;
     align-items: center;
@@ -46,20 +43,17 @@
     padding: 56px 20px;
 }
 
-/* The card */
 .card {
     width: 400px;
     max-width: 100%;
     padding: 36px 36px 32px;
 }
 
-/* Head block (badge, title, subtitle) centered */
 .card-head {
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Form: stack the fields vertically */
 .form {
     display: flex;
     flex-direction: column;
@@ -78,7 +72,6 @@
     padding: 0 14px;
 }
 
-/* Divider row */
 .divider {
     display: flex;
     align-items: center;
@@ -91,14 +84,12 @@
     height: 1px;
 }
 
-/* Google button: full width */
 #googleBtn {
     width: 100%;
     height: 44px;
     cursor: pointer;
 }
 
-/* Submit: full width */
 .submit {
     width: 100%;
     height: 44px;
@@ -106,7 +97,6 @@
     cursor: pointer;
 }
 
-/* Footer row */
 .foot {
     display: flex;
     align-items: center;
@@ -139,7 +129,6 @@ a {
     color: var(--ink);
 }
 
-/* Header: white bar, thick ink underline */
 .header {
     background: var(--card-bg);
     border-bottom: 2px solid var(--ink);
@@ -158,7 +147,6 @@ a {
     padding: 6px 4px;
 }
 
-/* Card: white, thick ink border, rounded, hard offset shadow */
 .card {
     background: var(--card-bg);
     border: 3px solid var(--ink);
@@ -166,7 +154,6 @@ a {
     box-shadow: 7px 7px 0 var(--ink);
 }
 
-/* Badge: hot pink sticker pill */
 .badge {
     display: inline-block;
     background: var(--pink);
@@ -189,7 +176,6 @@ a {
     color: var(--muted);
 }
 
-/* Inputs: white, ink border, rounded, hard shadow */
 .input {
     background: var(--card-bg);
     border: 2px solid var(--ink);
@@ -204,7 +190,6 @@ a {
     border-color: var(--ink);
 }
 
-/* Submit: white sticker button */
 .submit {
     background: var(--card-bg);
     border: 2px solid var(--ink);
@@ -223,7 +208,6 @@ a {
     box-shadow: 2px 2px 0 var(--ink);
 }
 
-/* Divider: pale lines, muted text */
 .divider-line {
     background: var(--hairline);
 }
@@ -232,7 +216,6 @@ a {
     color: var(--muted);
 }
 
-/* Google button: same sticker treatment */
 #googleBtn {
     background: var(--card-bg);
     border: 2px solid var(--ink);
@@ -277,14 +260,12 @@ body {
     font-family: var(--font-display);
 }
 
-/* Brand: heavy, wide-tracked */
 .brand {
     font-weight: 800;
     font-size: 19px;
     letter-spacing: 0.14em;
 }
 
-/* Header nav: bold, compact */
 .nav-right a,
 #darkToggle {
     font-weight: 700;
@@ -293,7 +274,6 @@ body {
     font-family: var(--font-display);
 }
 
-/* Badge: small heavy uppercase sticker text */
 .badge {
     font-weight: 800;
     font-size: 11px;
@@ -301,7 +281,6 @@ body {
     text-transform: uppercase;
 }
 
-/* Title: heavy display, tight */
 .title {
     font-weight: 800;
     font-size: 32px;
@@ -310,14 +289,12 @@ body {
     margin: 12px 0 6px;
 }
 
-/* Subtitle: mono microcopy */
 .subtitle {
     font-family: var(--font-mono);
     font-size: 13px;
     line-height: 1.5;
 }
 
-/* Field labels: tiny tracked-out mono caps */
 .label-text {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -326,13 +303,11 @@ body {
     text-transform: uppercase;
 }
 
-/* Inputs: readable text size */
 .input {
     font-family: var(--font-display);
     font-size: 15px;
 }
 
-/* Submit: mono sticker caps like Figma */
 .submit {
     font-family: var(--font-mono);
     font-weight: 700;
@@ -341,7 +316,6 @@ body {
     text-transform: uppercase;
 }
 
-/* Divider: mono micro caps */
 .divider-text {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -349,14 +323,12 @@ body {
     letter-spacing: 0.08em;
 }
 
-/* Google button: mono like Figma */
 #googleBtn {
     font-family: var(--font-mono);
     font-weight: 700;
     font-size: 13px;
 }
 
-/* Footer: mono microcopy + bold link */
 .foot-text {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -375,10 +347,6 @@ body.dark {
     --hairline: #3B3044;
 }
 
-/* Form error: shown by signup.js when validation fails.
-   This was missing from signin.css, so the error text previously
-   rendered as plain unstyled text. Hidden by default (the hidden
-   attribute on the element); signup.js unhides it on error. */
 .form-error {
     color: #C81E1E;
     background: #FDECEC;
@@ -394,9 +362,6 @@ body.dark {
     display: none;
 }
 
-/* Nav bar - same as Pratishtha's dashboard nav (dash-navbar,
-   as on dashboard.html and signin.html). Copied from signin.css
-   so it uses this page's --ink variable and body.dark class. */
 .dash-navbar {
     border-bottom: 3px solid var(--ink);
     background-color: rgba(255, 242, 251, 0.95);
@@ -440,8 +405,6 @@ body.dark .dash-navbar { background-color: rgba(23, 17, 27, 0.95); }
 body.dark .theme-icon-sun { display: block; }
 body.dark .theme-icon-moon { display: none; }
 
-/* Theme toggle on this nav: the plain #darkToggle rule above would
-   otherwise override the dashboard yellow button. */
 #darkToggle.theme-toggle-btn {
     background: #ffd84d;
     width: 48px; height: 46px; padding: 0;

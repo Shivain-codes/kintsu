@@ -28,10 +28,6 @@ function writeUsersToFile(users) {
     }
 }
 
-/**
- * @route   GET /api/users
- * @desc    Get all users
- */
 router.get('/', async (req, res) => {
     try {
         if (isConnected()) {
@@ -45,10 +41,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-/**
- * @route   POST /api/users
- * @desc    Register or record a user login
- */
 router.post('/', async (req, res) => {
     try {
         const { email, username } = req.body;
@@ -74,7 +66,6 @@ router.post('/', async (req, res) => {
             };
         }
 
-        // Keep local JSON in sync
         const fileUsers = readUsersFromFile();
         const existingIdx = fileUsers.findIndex(u => u.email === email.toLowerCase().trim());
         if (existingIdx >= 0) {

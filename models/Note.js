@@ -48,7 +48,6 @@ const NoteSchema = new mongoose.Schema({
     }
 });
 
-// Update the timestamp before saving
 NoteSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();

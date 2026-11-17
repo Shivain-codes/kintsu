@@ -3,10 +3,6 @@ const router = express.Router();
 const vm = require('vm');
 const { exec, spawn } = require('child_process');
 
-/**
- * @route   POST /api/compile
- * @desc    Execute JavaScript or Python code in real-time and return console outputs
- */
 router.post('/', async (req, res) => {
     const { code, language = 'javascript', stdin = '' } = req.body;
 
@@ -20,7 +16,6 @@ router.post('/', async (req, res) => {
     const lang = (language || '').toLowerCase().trim();
     const startTime = Date.now();
 
-    // ─── 1. REAL JAVASCRIPT EXECUTION (Node.js VM Sandbox) ───────────────────
     if (lang === 'javascript' || lang === 'js' || lang.includes('node')) {
         try {
             const logs = [];
@@ -60,7 +55,6 @@ router.post('/', async (req, res) => {
         }
     }
 
-    // ─── 2. REAL PYTHON EXECUTION (Local Python 3.11 Runtime) ─────────────────
     if (lang === 'python' || lang === 'py' || lang.includes('python')) {
         return new Promise(resolve => {
             const pyProcess = spawn('python', ['-c', code], { timeout: 4000 });
@@ -105,7 +99,6 @@ router.post('/', async (req, res) => {
         });
     }
 
-    // ─── 3. OTHER LANGUAGES (C++, Java, etc.) ─────────────────────────────────
     return res.json({
         success: true,
         output: `[Compiler Diagnostic]\nLanguage '${language}' simulation compiled successfully.\nNote: Live local execution is natively active for JavaScript & Python.\nFor C++/Java, install g++/javac on server path.`,
