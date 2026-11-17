@@ -1,0 +1,1 @@
+{"author":"Shivain Gupta","dependencies":{"dotenv":"^16.4.5","express":"^5.3.0","mongoose":"^8.9.5"},"description":"Kintsu signup page — Node + Express demo for the 3rd web-dev evaluation: local JSON CRUD, MongoDB CRUD, external API fetch","license":"MIT","main":"server.js","name":"kintsu-eval3","scripts":{"start":"node server.js"},"type":"commonjs","version":"1.0.0"}
