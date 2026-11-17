@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kintsu — Study without context switching</title>
+    <meta name="description" content="Watch lectures, take notes, run code, and turn highlights into AI flashcards — all in one tab.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left"><span class="wordmark">KINTSU</span></div>
+        <div class="nav-right">
+            <a href="#workspace" class="nav-btn outline">Workspace</a>
+            <a href="#features" class="nav-btn outline">Features</a>
+            <a href="#flashcards" class="nav-btn outline">Flashcards</a>
+            <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode">🌙</button>
+            <a href="signin.html" class="nav-btn signin">Sign in</a>
+        </div>
+    </nav>
+
+    <div class="ticker">
+        <div class="ticker-track">
+            <span class="ticker-text">VIDEO + NOTES &nbsp;✦&nbsp; CODE BLOCKS &nbsp;✦&nbsp; ALL IN ONE SCREEN &nbsp;✦&nbsp; AI FLASHCARDS &nbsp;✦&nbsp; CODE EDITOR AND COMPILER &nbsp;✦&nbsp; YOUR WORKSPACE &nbsp;✦&nbsp; ACTIVE TIMESTAMPS &nbsp;✦&nbsp;</span>
+            <span class="ticker-text">VIDEO + NOTES &nbsp;✦&nbsp; CODE BLOCKS &nbsp;✦&nbsp; ALL IN ONE SCREEN &nbsp;✦&nbsp; AI FLASHCARDS &nbsp;✦&nbsp; CODE EDITOR AND COMPILER &nbsp;✦&nbsp; YOUR WORKSPACE &nbsp;✦&nbsp; ACTIVE TIMESTAMPS &nbsp;✦&nbsp;</span>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="sparkle-row">
+                <svg class="sparkle gold" viewBox="0 0 24 24" width="28" height="28"><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41Z" fill="#f5a623"/></svg>
+                <div class="badge"><span class="badge-dot"></span>LIVE · NO SIGNUP TO EXPLORE</div>
+                <svg class="sparkle teal" viewBox="0 0 24 24" width="20" height="20"><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41Z" fill="#2dd4a8"/></svg>
+            </div>
+            <h1 class="heading">Study without<br><span class="highlight">context switching</span></h1>
+            <p class="subheading">Watch lectures, take notes, run code, and turn highlights<br><span class="underline-word">into</span> <strong>AI flashcards</strong> — all in one tab.</p>
+            <div class="cta-buttons">
+                <a href="signin.html" class="btn primary">Start learning free &nbsp;↗</a>
+                <a href="#workspace" class="btn outline-btn">Try the workspace</a>
+            </div>
+            <div class="social-proof">
+                <div class="avatars"><span class="avatar av-1"></span><span class="avatar av-2"></span><span class="avatar av-3"></span><span class="avatar av-4"></span></div>
+                <span class="proof-text">JOINED BY 100+ LEARNERS</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="preview-section" id="flashcards">
+        <div class="preview-card">
+            <div class="preview-left">
+                <span class="tag-pill">✨ LIVE DEMO</span>
+                <h3>Select text → AI generates flashcards.</h3>
+                <p>Highlight anything in your notes. We turn it into recall-ready cards, instantly.</p>
+                <div class="sample-note"><p>Rate limiting protects APIs from abuse. <mark>Token Bucket allows short bursts up to bucket size and refills at a fixed rate.</mark></p></div>
+            </div>
+            <div class="preview-right">
+                <div class="flip-card" id="demoCard" role="button" tabindex="0" title="Click to flip">
+                    <div class="flip-inner">
+                        <div class="flip-front"><span class="card-label">QUESTION</span><p>Which algorithm allows short bursts of requests up to a bucket size?</p><span class="card-hint">Click to flip</span></div>
+                        <div class="flip-back"><span class="card-label">ANSWER</span><p>Token Bucket Algorithm — refills tokens at a fixed rate while allowing short bursts.</p><span class="card-hint">Click to flip</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="features-header"><span class="tag-pill">FEATURES</span><h2>The whole learning loop, one screen.</h2></div>
+        <div class="features-grid">
+            <div class="feature-card"><span class="feature-icon icon-pink">📖</span><h3>Video, notes, and code</h3><p>Keep the lecture, your editor, and runnable examples in one focused workspace.</p></div>
+            <div class="feature-card"><span class="feature-icon icon-yellow">✨</span><h3>AI flashcards</h3><p>Highlight anything — get recall-ready decks in seconds.</p></div>
+            <div class="feature-card"><span class="feature-icon icon-mint">⏱️</span><h3>Active timestamps</h3><p>Jump from any note back to the exact moment in the video.</p></div>
+            <div class="feature-card"><span class="feature-icon icon-lilac">💻</span><h3>Executable code</h3><p>Practice the concept as you learn it. Python, JS, and more.</p></div>
+        </div>
+    </section>
+
+    <section class="workspace-section" id="workspace">
+        <div class="workspace-header">
+            <span class="workspace-live-badge">LIVE · NO SIGNUP</span>
+            <h2 class="workspace-title">Try the real workspace right here.</h2>
+            <p class="workspace-subtitle">Paste a YouTube link, take real notes, and highlight text to generate real AI flashcards. Nothing is faked. Sign up when you want to save.</p>
+        </div>
+        <div class="workspace-wrapper">
+            <div class="workspace-window" id="workspaceWindow">
+                <div class="ws-pane ws-video-pane" id="wsVideoPane">
+                    <div class="ws-pane-header">
+                        <a href="signin.html" class="ws-pill-btn ws-btn-pink">BACK TO DASHBOARD</a>
+                        <div class="ws-view-switcher" role="tablist">
+                            <button class="ws-view-btn" data-mode="guide" type="button">GUIDE</button>
+                            <button class="ws-view-btn active" data-mode="split" type="button">SPLIT</button>
+                            <button class="ws-view-btn" data-mode="notes" type="button">NOTES</button>
+                        </div>
+                    </div>
+                    <div class="ws-url-bar">
+                        <input type="text" class="ws-url-input" id="ytUrlInput" value="https://www.youtube.com/watch?v=LPZh9BOjkQs" placeholder="Paste YouTube link here..." />
+                        <button class="ws-embed-btn" id="ytEmbedBtn" type="button">Embed</button>
+                    </div>
+                    <div class="ws-player-container">
+                        <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/LPZh9BOjkQs?enablejsapi=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="ws-video-footer">
+                        <div class="ws-time-indicator"><span class="ws-time-pill" id="ytTimeDisplay">0:00</span></div>
+                        <div class="ws-video-actions">
+                            <button class="ws-action-btn" id="aiNotesBtn" type="button">✨ AI Notes</button>
+                            <button class="ws-action-btn" id="addTimestampBtn" type="button">+ Add Timestamp</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ws-divider" id="wsDivider" aria-hidden="true"><span class="ws-divider-knob"></span></div>
+                <div class="ws-pane ws-content-pane" id="wsContentPane">
+                    <div class="ws-tabs-bar">
+                        <div class="ws-tab-group">
+                            <button class="ws-tab-btn active" id="tabNotesBtn" data-tab="notes" type="button">Notes</button>
+                            <button class="ws-tab-btn" id="tabCodeBtn" data-tab="code" type="button">Code</button>
+                        </div>
+                    </div>
+                    <div class="ws-tab-view active" id="viewNotes">
+                        <div class="ws-toolbar">
+                            <div class="ws-tools-cluster">
+                                <button class="ws-tool-btn mic-btn" id="wsMicBtn" title="Voice note" type="button">🎙️</button>
+                                <span class="ws-tool-divider"></span>
+                                <button class="ws-tool-btn" data-format="bold" type="button"><strong>B</strong></button>
+                                <button class="ws-tool-btn" data-format="italic" type="button"><em>I</em></button>
+                                <button class="ws-tool-btn" data-format="underline" type="button"><u>U</u></button>
+                                <button class="ws-tool-btn" data-format="strikeThrough" type="button"><s>S</s></button>
+                                <button class="ws-tool-btn" data-format="code" type="button">&lt;/&gt;</button>
+                                <button class="ws-tool-btn quote-btn active-pink" data-format="blockquote" type="button">”</button>
+                                <button class="ws-tool-btn" data-format="h1" type="button">H1</button>
+                                <button class="ws-tool-btn" data-format="h2" type="button">H2</button>
+                                <button class="ws-tool-btn" data-format="insertUnorderedList" type="button">≡</button>
+                                <button class="ws-tool-btn" data-format="insertOrderedList" type="button">1.</button>
+                                <button class="ws-tool-btn" data-format="codeblock" type="button">{ }</button>
+                            </div>
+                            <button class="ws-code-switch-pill" id="quickCodeBtn" type="button">CODE</button>
+                        </div>
+                        <div class="ws-subtoolbar">
+                            <div class="ws-subtools-left">
+                                <button class="ws-subtool-pill pink-subtool" type="button">“”</button>
+                                <button class="ws-subtool-btn" data-format="insertUnorderedList" type="button">📋</button>
+                                <button class="ws-subtool-btn" data-format="insertHorizontalRule" type="button">—</button>
+                                <button class="ws-subtool-btn" data-format="undo" type="button">↺</button>
+                                <button class="ws-subtool-btn" data-format="redo" type="button">↻</button>
+                            </div>
+                            <span class="ws-status-text" id="wsAutoSaveStatus">✓ Auto-saved</span>
+                        </div>
+                        <div class="ws-note-editor">
+                            <h3 class="ws-note-title" contenteditable="true" spellcheck="false">Neural Network Fundamentals: Structural Overview</h3>
+                            <div class="ws-note-body" id="wsNoteBody" contenteditable="true" spellcheck="false">
+                                <ul class="ws-bullets"><li><strong>Biases:</strong> These are values added to the weighted sum of inputs, allowing a neuron to adjust its threshold for activation.</li></ul>
+                                <div class="ws-timestamp-card" data-time="240" contenteditable="false">
+                                    <div class="ws-ts-header" role="button" tabindex="0"><span class="ws-ts-icon ws-ts-play">▶</span><span class="ws-ts-label">4. Mathematical Representation</span><span class="ws-ts-time">04:00</span></div>
+                                </div>
+                                <div class="ws-timestamp-card expanded" data-time="315" contenteditable="false">
+                                    <div class="ws-ts-header" role="button" tabindex="0"><span class="ws-ts-icon ws-ts-arrow">▼</span><span class="ws-ts-label">5. Modern Advancements: ReLU vs. Sigmoid</span><span class="ws-ts-time">05:15</span></div>
+                                    <div class="ws-ts-content"><p>While the Sigmoid function is historically significant, modern deep networks favor <mark class="ai-highlight-pill" id="sampleHighlightSpan">ReLU (Rectified Linear Unit)</mark>. ReLU simplifies the activation to <code class="ws-inline-code">max(0, a)</code>.</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ws-ai-tooltip" id="wsAiTooltip" style="display: none;"><button class="ws-ai-tooltip-btn" id="wsTriggerFlashcardBtn" type="button"><span>✨</span> Generate Flashcard</button></div>
+                        <div class="ws-generated-deck" id="wsGeneratedDeck" style="display: none;">
+                            <div class="ws-deck-top"><span class="ws-deck-badge">✨ AI GENERATED FLASHCARD FROM HIGHLIGHT</span><button class="ws-deck-dismiss" id="wsDismissDeckBtn" type="button">✕</button></div>
+                            <div class="ws-deck-card" id="wsMiniDeckCard" role="button" tabindex="0">
+                                <div class="ws-deck-inner">
+                                    <div class="ws-deck-front"><span class="ws-deck-type">QUESTION</span><p id="wsDeckQuestionText">What is the advantage of using ReLU (Rectified Linear Unit) over Sigmoid in deep networks?</p><span class="ws-deck-prompt">Click to flip</span></div>
+                                    <div class="ws-deck-back"><span class="ws-deck-type">ANSWER</span><p id="wsDeckAnswerText">ReLU simplifies activation to max(0, a), which mitigates the vanishing gradient problem and is much faster to compute.</p><span class="ws-deck-prompt">Click to flip</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ws-tab-view" id="viewCode" style="display: none;">
+                        <div class="ws-code-header">
+                            <div class="ws-code-lang"><label for="wsLangSelect">Language:</label><select id="wsLangSelect" class="ws-lang-dropdown"><option value="python">Python 3</option><option value="javascript">JavaScript</option></select></div>
+                            <div class="ws-code-btns"><button class="ws-code-action-btn" id="wsResetCodeBtn" type="button">Reset</button><button class="ws-code-run-btn" id="wsRunCodeBtn" type="button">▶ Run Code</button></div>
+                        </div>
+                        <div class="ws-editor-shell">
+                            <div class="ws-line-numbers" id="wsLineNumbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</div>
+                            <textarea class="ws-code-input" id="wsCodeEditor" spellcheck="false" aria-label="Code Editor"></textarea>
+                        </div>
+                        <div class="ws-terminal">
+                            <div class="ws-terminal-bar"><span class="ws-term-title">CONSOLE OUTPUT</span><span class="ws-term-status" id="wsTermStatus">Ready</span></div>
+                            <pre class="ws-terminal-body" id="wsTerminalOutput">Click '▶ Run Code' to execute the script in-browser...</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bottom-cta">
+        <div class="bottom-cta-content">
+            <h2>Your next lecture can<br>become a study deck today.</h2>
+            <p>No credit card. Start with a single link.</p>
+            <a href="signin.html" class="btn primary">Open dashboard &nbsp;↗</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-brand">Kintsu</span>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="signin.html">Dashboard</a>
+                <a href="https://github.com/agarwalpranav0711/kintsu" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
