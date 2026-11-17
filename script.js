@@ -380,6 +380,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
                     currentStacks.unshift(newStack);
                     localStorage.setItem('kintsu_flashcards', JSON.stringify(currentStacks));
+                    if (window.fetch) {
+                        fetch('/api/flashcards', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(newStack)
+                        }).catch(function () {});
+                    }
                 } catch (e) {}
             }
             hideWorkspaceBubble();
@@ -442,33 +449,43 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isRunningEmbedded) return;
             var code = embeddedCodeInput ? embeddedCodeInput.value.trim() : '';
             if (!code) {
-                embeddedTerminalOutput.textContent = '[Simulation Diagnostic]\nError: Sandbox input is empty. Write code to execute.';
+                embeddedTerminalOutput.textContent = '[Diagnostic Output]\nError: Sandbox code input is empty. Write code to execute.';
                 showToast('Sandbox code editor is empty ⚠️');
                 return;
             }
             isRunningEmbedded = true;
             btnRunEmbeddedCode.disabled = true;
             btnRunEmbeddedCode.setAttribute('aria-busy', 'true');
-            embeddedTerminalOutput.textContent = '[Sandbox Simulation Environment]\nCompiling and running runtime environment...\n';
-            showToast('Executing code sandbox simulation…');
-            setTimeout(function () {
+            embeddedTerminalOutput.textContent = '[Compiler Environment]\nExecuting live runtime container...\n';
+            showToast('Running code in live execution environment…');
+
+            var lang = embeddedLangSelect ? embeddedLangSelect.value : 'python';
+            fetch('/api/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, language: lang })
+            })
+            .then(function (res) { return res.json(); })
+            .then(function (result) {
                 var timestamp = new Date().toLocaleTimeString();
                 embeddedTerminalOutput.textContent =
-                    '[Sandbox Simulation Output • ' + timestamp + ']\n' +
-                    '> Runtime: ' + (embeddedLangSelect ? embeddedLangSelect.value : 'python') + ' (Simulated Environment)\n' +
-                    '> Status: 200 OK (0.04s)\n' +
+                    '[Live Output • ' + timestamp + ']\n' +
+                    '> Runtime: ' + (result.runtime || lang) + ' (' + (result.executionTime || '0.01s') + ')\n' +
                     '-------------------------------------------\n' +
-                    'Computed Neuron Activation: 0.7330\n' +
-                    'Weights dot product: 0.9100\n' +
-                    'Bias offset applied: +0.1000\n' +
-                    'Neuron Classification State: TRIGGERED (1)\n' +
+                    result.output + '\n' +
                     '-------------------------------------------\n' +
-                    '[Process completed with exit code 0]';
-                showToast('Simulation execution completed! ✅');
+                    '[Process completed with exit code ' + (result.success ? 0 : 1) + ']';
+                showToast(result.success ? 'Code executed successfully! ✅' : 'Execution finished with errors ⚠️');
+            })
+            .catch(function (err) {
+                embeddedTerminalOutput.textContent = '[Execution Error]\n' + err.message;
+                showToast('Execution error ⚠️');
+            })
+            .finally(function () {
                 isRunningEmbedded = false;
                 btnRunEmbeddedCode.disabled = false;
                 btnRunEmbeddedCode.removeAttribute('aria-busy');
-            }, 600);
+            });
         });
     }
     var isRunningFullCode = false;
@@ -481,30 +498,43 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isRunningFullCode) return;
             var code = fullCodeInput ? fullCodeInput.value.trim() : '';
             if (!code) {
-                fullCodeTerminalOutput.textContent = '[Simulation Diagnostic]\nError: Code editor is empty. Enter code to execute.';
+                fullCodeTerminalOutput.textContent = '[Diagnostic Output]\nError: Code editor is empty. Enter code to execute.';
                 showToast('Code workspace is empty ⚠️');
                 return;
             }
             isRunningFullCode = true;
             btnRunFullCode.disabled = true;
             btnRunFullCode.setAttribute('aria-busy', 'true');
-            fullCodeTerminalOutput.textContent = '[Sandbox Simulation Environment]\nCompiling in simulated sandbox container...\n';
-            showToast('Executing code workspace simulation…');
-            setTimeout(function () {
+            fullCodeTerminalOutput.textContent = '[Compiler Environment]\nCompiling in live isolated runtime container...\n';
+            showToast('Executing code workspace in live runtime…');
+
+            var fullLang = fullCodeLangSelect ? fullCodeLangSelect.value : 'python';
+            fetch('/api/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, language: fullLang })
+            })
+            .then(function (res) { return res.json(); })
+            .then(function (result) {
                 var timestamp = new Date().toLocaleTimeString();
                 fullCodeTerminalOutput.textContent =
-                    '[Simulation Run Result • ' + timestamp + ']\n' +
-                    '> Runtime: ' + (fullCodeLangSelect ? fullCodeLangSelect.value : 'python') + ' (Isolated Sandbox Container)\n' +
+                    '[Runtime Output • ' + timestamp + ']\n' +
+                    '> Engine: ' + (result.runtime || fullLang) + ' (' + (result.executionTime || '0.01s') + ')\n' +
                     '-------------------------------------------\n' +
-                    'Original: [3, 1, 4, 1, 5, 9]\n' +
-                    'Prefix sums: [3, 4, 8, 9, 14, 23]\n' +
+                    result.output + '\n' +
                     '-------------------------------------------\n' +
-                    '[Completed in 0.038s with exit code 0]';
-                showToast('Ran code simulation successfully! ✅');
+                    '[Finished with exit code ' + (result.success ? 0 : 1) + ']';
+                showToast(result.success ? 'Ran code successfully! ✅' : 'Runtime error in code ⚠️');
+            })
+            .catch(function (err) {
+                fullCodeTerminalOutput.textContent = '[Execution Error]\n' + err.message;
+                showToast('Execution error ⚠️');
+            })
+            .finally(function () {
                 isRunningFullCode = false;
                 btnRunFullCode.disabled = false;
                 btnRunFullCode.removeAttribute('aria-busy');
-            }, 500);
+            });
         });
     }
     var workspaceShell = document.getElementById('workspaceShell'), workspaceLeft = document.getElementById('workspaceLeft'), btnModeGuide = document.getElementById('btnModeGuide'), btnModeSplit = document.getElementById('btnModeSplit'), btnModeNotes = document.getElementById('btnModeNotes');

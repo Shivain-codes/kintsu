@@ -65,34 +65,44 @@ function initApp() {
     loadNotes();
 }
 
-// 2. DATA LAYER: Load from localStorage or data/notes.json
+// 2. DATA LAYER: Load from Express API (/api/notes) with MongoDB & local cache
 function loadNotes() {
-    const local = localStorage.getItem('kintsu_notes');
-    if (local) {
-        notes = JSON.parse(local);
-        renderNotes();
-        return;
-    }
-    fetch('data/notes.json')
+    fetch('/api/notes')
         .then(res => res.json())
-        .then(data => { notes = data; saveNotes(); renderNotes(); })
+        .then(result => {
+            if (result && Array.isArray(result.data) && result.data.length > 0) {
+                notes = result.data.map(n => ({
+                    ...n,
+                    id: n.id || (n._id ? n._id.toString() : 'LP' + Math.random().toString(36).substr(2, 6).toUpperCase()),
+                    date: n.date || (n.createdAt ? new Date(n.createdAt).toLocaleDateString('en-US') : '10/28/2026')
+                }));
+            } else {
+                const local = localStorage.getItem('kintsu_notes');
+                if (local) {
+                    notes = JSON.parse(local);
+                } else {
+                    notes = [{ id: 'LPZH9BOJ', title: 'Neural Network Fundamentals: Structural Overview', date: '10/28/2026', videoUrl: 'https://www.youtube.com/watch?v=aircAruvnKk', coverTheme: 'llm', coverImage: 'assets/neural-cover.webp', board: 'All Notes' }];
+                }
+            }
+            localStorage.setItem('kintsu_notes', JSON.stringify(notes, null, 2));
+            renderBoards();
+            renderNotes();
+        })
         .catch(() => {
-            notes = [{ id: 'LPZH9BOJ', title: 'Neural Network Fundamentals: Structural Overview', date: '10/28/2026', videoUrl: 'https://www.youtube.com/watch?v=aircAruvnKk', coverTheme: 'llm', coverImage: 'assets/neural-cover.webp', board: 'All Notes' }];
-            saveNotes();
+            const local = localStorage.getItem('kintsu_notes');
+            if (local) {
+                notes = JSON.parse(local);
+            } else {
+                notes = [{ id: 'LPZH9BOJ', title: 'Neural Network Fundamentals: Structural Overview', date: '10/28/2026', videoUrl: 'https://www.youtube.com/watch?v=aircAruvnKk', coverTheme: 'llm', coverImage: 'assets/neural-cover.webp', board: 'All Notes' }];
+            }
+            renderBoards();
             renderNotes();
         });
 }
 
-// Save notes to localStorage AND send to server to write data/notes.json on disk
+// Save notes to localStorage
 function saveNotes() {
     localStorage.setItem('kintsu_notes', JSON.stringify(notes, null, 2));
-    if (window.fetch) {
-        fetch('/api/notes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(notes)
-        }).catch(() => {});
-    }
 }
 
 function getBoardOf(note) {
@@ -203,7 +213,7 @@ function renderNotes() {
         const coverBg = note.coverTheme === 'python' ? '#1e293b' : '#130d1a';
         const checkboxHtml = selectMode ? '<button type="button" class="select-checkbox" onclick="event.stopPropagation(); toggleNoteSelection(\'' + note.id + '\')" title="Select note">' + (selectedNotes.has(note.id) ? '&#10003;' : '') + '</button>' : '';
         const hintHtml = selectMode ? '<span class="select-hint">' + (selectedNotes.has(note.id) ? '&#10003; selected' : 'tap to select') + '</span>' : '';
-        const actionsHtml = selectMode ? '' : '<div class="card-actions-group"><button type="button" class="btn-card-delete" onclick="deleteNote(\'' + note.id + '\')" title="Delete note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button><a href="index.html#workspace" class="btn-card-open" onclick="openNote(\'' + note.id + '\')" title="Open in Workspace"><span>Open</span> <span>\u2197</span></a></div>';
+        const actionsHtml = selectMode ? '' : '<div class="card-actions-group"><button type="button" class="btn-card-pin" onclick="togglePinNote(\'' + note.id + '\')" title="' + (note.pinned ? 'Unpin note' : 'Pin note') + '">' + (note.pinned ? '📌' : '📍') + '</button><button type="button" class="btn-card-delete" onclick="deleteNote(\'' + note.id + '\')" title="Delete note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button><a href="index.html#workspace" class="btn-card-open" onclick="openNote(\'' + note.id + '\')" title="Open in Workspace"><span>Open</span> <span>\u2197</span></a></div>';
 
         card.innerHTML = `
             ${checkboxHtml}
@@ -235,11 +245,29 @@ window.openNote = function (id) {
     if (note) localStorage.setItem('kintsu_active_note', JSON.stringify(note));
 };
 
-// Delete Note
+// Toggle Pin Note (calls PATCH /api/notes/:id/pin)
+window.togglePinNote = function (id) {
+    const note = notes.find(n => n.id === id || (n._id && n._id.toString() === id));
+    if (note) {
+        note.pinned = !note.pinned;
+        notes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+        saveNotes();
+        renderNotes();
+        if (window.fetch) {
+            fetch('/api/notes/' + id + '/pin', { method: 'PATCH' }).catch(() => {});
+        }
+    }
+};
+
+// Delete Note (calls DELETE /api/notes/:id)
 window.deleteNote = function (id) {
-    notes = notes.filter(n => n.id !== id);
+    notes = notes.filter(n => n.id !== id && (!n._id || n._id.toString() !== id));
     saveNotes();
+    renderBoards();
     renderNotes();
+    if (window.fetch) {
+        fetch('/api/notes/' + id, { method: 'DELETE' }).catch(() => {});
+    }
 };
 
 const newBoardBtn = document.getElementById('newBoardBtn');
@@ -306,8 +334,13 @@ if (selectModeBtn) {
 const batchDeleteBtn = document.getElementById('batchDeleteBtn');
 if (batchDeleteBtn) {
     batchDeleteBtn.onclick = () => {
-        notes = notes.filter(n => !selectedNotes.has(n.id));
+        selectedNotes.forEach(id => {
+            if (window.fetch) fetch('/api/notes/' + id, { method: 'DELETE' }).catch(() => {});
+        });
+        notes = notes.filter(n => !selectedNotes.has(n.id) && (!n._id || !selectedNotes.has(n._id.toString())));
         saveNotes();
+        renderBoards();
+        renderNotes();
         exitSelectMode();
     };
 }
@@ -369,17 +402,55 @@ if (createForm) {
 
         const selectedTheme = createForm.querySelector('input[name="coverTheme"]:checked')?.value || 'llm';
         const board = boardSelect ? boardSelect.value : currentBoard;
-        notes.unshift({
-            id: 'LP' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+        const notePayload = {
             title: title,
             videoUrl: url,
+            youtubeUrl: url,
             coverTheme: selectedTheme,
-            date: new Date().toLocaleDateString('en-US'),
             board: board
-        });
+        };
 
-        saveNotes();
-        renderNotes();
+        if (window.fetch) {
+            fetch('/api/notes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(notePayload)
+            })
+            .then(res => res.json())
+            .then(result => {
+                const created = (result && result.data) ? result.data : notePayload;
+                notes.unshift({
+                    ...created,
+                    id: created.id || (created._id ? created._id.toString() : 'LP' + Math.random().toString(36).substring(2, 8).toUpperCase()),
+                    date: created.date || (created.createdAt ? new Date(created.createdAt).toLocaleDateString('en-US') : new Date().toLocaleDateString('en-US')),
+                    coverTheme: selectedTheme,
+                    videoUrl: url
+                });
+                saveNotes();
+                renderBoards();
+                renderNotes();
+            })
+            .catch(() => {
+                notes.unshift({
+                    id: 'LP' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+                    ...notePayload,
+                    date: new Date().toLocaleDateString('en-US')
+                });
+                saveNotes();
+                renderBoards();
+                renderNotes();
+            });
+        } else {
+            notes.unshift({
+                id: 'LP' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+                ...notePayload,
+                date: new Date().toLocaleDateString('en-US')
+            });
+            saveNotes();
+            renderBoards();
+            renderNotes();
+        }
+
         createForm.reset();
         modal.style.display = 'none';
     };

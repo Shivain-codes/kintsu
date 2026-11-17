@@ -189,7 +189,110 @@ function initLibrary() {
     }
     const asEl = document.getElementById("feedbackAs");
     if (asEl && user.email) asEl.textContent = "Sending as " + user.email;
+
+    // Create Flashcard Modal Handlers
+    const createModal = document.getElementById("createFlashcardModal");
+    const openCreateBtn = document.getElementById("openCreateFlashcardBtn");
+    const closeCreateBtn = document.getElementById("closeCreateCardModal");
+    const cancelCreateBtn = document.getElementById("cancelCreateCardBtn");
+    const createForm = document.getElementById("createFlashcardForm");
+    const fcDeckInput = document.getElementById("fcDeckInput");
+    const fcQuestionInput = document.getElementById("fcQuestionInput");
+    const fcAnswerInput = document.getElementById("fcAnswerInput");
+    const fcError = document.getElementById("fcFormError");
+
+    function openModal() {
+        if (createModal) {
+            createModal.style.display = "flex";
+            if (fcDeckInput) fcDeckInput.focus();
+        }
+    }
+    function closeModal() {
+        if (createModal) {
+            createModal.style.display = "none";
+            if (createForm) createForm.reset();
+            if (fcError) fcError.style.display = "none";
+        }
+    }
+
+    if (openCreateBtn) openCreateBtn.onclick = openModal;
+    if (closeCreateBtn) closeCreateBtn.onclick = closeModal;
+    if (cancelCreateBtn) cancelCreateBtn.onclick = closeModal;
+
+    if (createForm) {
+        createForm.onsubmit = function (e) {
+            e.preventDefault();
+            const deckTitle = (fcDeckInput?.value || "").trim();
+            const question = (fcQuestionInput?.value || "").trim();
+            const answer = (fcAnswerInput?.value || "").trim();
+
+            if (!deckTitle || !question || !answer) {
+                if (fcError) {
+                    fcError.textContent = "Please fill in all fields (deck, question, and answer).";
+                    fcError.style.display = "block";
+                }
+                return;
+            }
+
+            const newCard = { question, answer };
+            let targetStack = stacks.find(s => (s.title || "").toLowerCase() === deckTitle.toLowerCase());
+
+            if (targetStack) {
+                if (!Array.isArray(targetStack.cards)) targetStack.cards = [];
+                targetStack.cards.unshift(newCard);
+                targetStack.createdAtRaw = Date.now();
+                targetStack.createdAt = "Today";
+            } else {
+                targetStack = {
+                    id: "stack_" + Date.now(),
+                    title: deckTitle,
+                    createdAt: "Today",
+                    createdAtRaw: Date.now(),
+                    cards: [newCard]
+                };
+                stacks.unshift(targetStack);
+            }
+
+            try {
+                localStorage.setItem("kintsu_flashcards", JSON.stringify(stacks));
+            } catch (err) {}
+
+            // Sync to MongoDB via Express API
+            if (window.fetch) {
+                fetch('/api/flashcards', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        deckTitle: deckTitle,
+                        question: question,
+                        answer: answer
+                    })
+                }).catch(() => {});
+            }
+
+            closeModal();
+            renderStacks();
+        };
+    }
+
     renderStacks();
+
+    // Auto-sync initial stacks to server MongoDB/JSON storage
+    if (window.fetch) {
+        fetch('/api/flashcards')
+            .then(r => r.json())
+            .then(res => {
+                if (res && res.count === 0 && stacks.length > 0) {
+                    stacks.forEach(st => {
+                        fetch('/api/flashcards', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(st)
+                        }).catch(() => {});
+                    });
+                }
+            }).catch(() => {});
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initLibrary);

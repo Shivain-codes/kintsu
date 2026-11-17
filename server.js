@@ -1,173 +1,114 @@
 /**
- * Kintsu Local Development & API Server
- * Zero dependencies — runs on pure Node.js standard library.
- * Serves static pages and provides real JSON file persistence on disk.
+ * KINTSU Full-Stack Application Server
+ * Framework: Express.js (A3 Evaluation Setup)
+ * ODM / Database: Mongoose / MongoDB with automatic JSON persistence fallback
+ * Template Engine: EJS
  */
 
-const http = require('http');
-const fs = require('fs');
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
+const { connectDB, isConnected } = require('./config/db');
+const Note = require('./models/Note');
+const User = require('./models/User');
+const Flashcard = require('./models/Flashcard');
+
+const app = express();
 const PORT = process.env.PORT || 3333;
-const DATA_DIR = path.join(__dirname, 'data');
-const NOTES_FILE = path.join(DATA_DIR, 'notes.json');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+// Initialize Database connection (asynchronous, non-blocking)
+connectDB();
 
-// MIME types dictionary
-const MIME_TYPES = {
-    '.html': 'text/html; charset=UTF-8',
-    '.css': 'text/css; charset=UTF-8',
-    '.js': 'application/javascript; charset=UTF-8',
-    '.json': 'application/json; charset=UTF-8',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.svg': 'image/svg+xml',
-    '.ico': 'image/x-icon'
-};
+// ─── Middleware ─────────────────────────────────────────────────────────────
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-function readBody(req, callback) {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-        try {
-            const data = JSON.parse(body);
-            callback(null, data);
-        } catch (err) {
-            callback(err, null);
-        }
-    });
-}
+// Request Logger Middleware
+app.use((req, res, next) => {
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, 8);
+    console.log(`[${timestamp}] ${req.method} ${req.url}`);
+    next();
+});
 
-const server = http.createServer((req, res) => {
-    const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    const pathname = parsedUrl.pathname;
+// ─── Template Engine (EJS) ──────────────────────────────────────────────────
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-    // CORS Headers for evaluation testing
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Server-Side Rendered View: Platform Metrics & Health
+app.get('/stats', async (req, res) => {
+    try {
+        let notes = [];
+        let users = [];
+        let flashcards = [];
 
-    if (req.method === 'OPTIONS') {
-        res.writeHead(204);
-        res.end();
-        return;
-    }
-
-    // 1. API Route: Save / Update Notes to data/notes.json
-    if (pathname === '/api/notes' && req.method === 'POST') {
-        readBody(req, (err, data) => {
-            if (err) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Invalid JSON body' }));
-                return;
-            }
-            fs.writeFile(NOTES_FILE, JSON.stringify(data, null, 2), 'utf8', writeErr => {
-                if (writeErr) {
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: 'Failed to write notes.json' }));
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, count: data.length }));
-            });
-        });
-        return;
-    }
-
-    // 2. API Route: Read Notes from data/notes.json
-    if (pathname === '/api/notes' && req.method === 'GET') {
-        if (!fs.existsSync(NOTES_FILE)) {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end('[]');
-            return;
-        }
-        fs.readFile(NOTES_FILE, 'utf8', (err, content) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Failed to read notes' }));
-                return;
-            }
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(content);
-        });
-        return;
-    }
-
-    // 3. API Route: Save User on Signin/Signup to data/users.json
-    if (pathname === '/api/users' && req.method === 'POST') {
-        readBody(req, (err, user) => {
-            if (err || !user.email) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Invalid user data' }));
-                return;
-            }
-
-            let users = [];
-            if (fs.existsSync(USERS_FILE)) {
+        if (isConnected()) {
+            notes = await Note.find().sort({ createdAt: -1 }).lean();
+            users = await User.find().lean();
+            flashcards = await Flashcard.find().lean();
+        } else {
+            // Read from JSON fallback
+            const readJson = (file) => {
+                const p = path.join(__dirname, 'data', file);
                 try {
-                    users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+                    return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8') || '[]') : [];
                 } catch (e) {
-                    users = [];
+                    return [];
                 }
-            }
-
-            const existingIndex = users.findIndex(u => u.email === user.email);
-            if (existingIndex >= 0) {
-                users[existingIndex] = { ...users[existingIndex], ...user, lastLogin: new Date().toISOString() };
-            } else {
-                users.push({
-                    id: 'usr_' + Date.now(),
-                    ...user,
-                    createdAt: new Date().toISOString()
-                });
-            }
-
-            fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2), 'utf8', writeErr => {
-                if (writeErr) {
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: 'Failed to write users.json' }));
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, email: user.email }));
-            });
-        });
-        return;
-    }
-
-    // 4. Static File Serving
-    let safePath = pathname === '/' ? '/index.html' : pathname;
-    let filePath = path.join(__dirname, safePath);
-
-    // Prevent directory traversal
-    if (!filePath.startsWith(__dirname)) {
-        res.writeHead(403);
-        res.end('Forbidden');
-        return;
-    }
-
-    fs.stat(filePath, (err, stats) => {
-        if (err || !stats.isFile()) {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('404 Not Found');
-            return;
+            };
+            notes = readJson('notes.json');
+            users = readJson('users.json');
+            flashcards = readJson('flashcards.json');
         }
 
-        const ext = path.extname(filePath).toLowerCase();
-        const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+        res.render('stats', {
+            title: 'Platform Analytics',
+            notes,
+            users,
+            flashcards,
+            dbConnected: isConnected()
+        });
+    } catch (err) {
+        console.error('[EJS Error]', err);
+        res.status(500).send('Error rendering metrics dashboard: ' + err.message);
+    }
+});
 
-        res.writeHead(200, { 'Content-Type': contentType });
-        const stream = fs.createReadStream(filePath);
-        stream.pipe(res);
+// ─── Modular API Routes ─────────────────────────────────────────────────────
+app.use('/api/notes', require('./routes/notes'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/flashcards', require('./routes/flashcards'));
+app.use('/api/compile', require('./routes/compile'));
+
+// ─── Static Files & Frontend Routing ─────────────────────────────────────────
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ─── Global Error Handler ───────────────────────────────────────────────────
+app.use((err, req, res, next) => {
+    console.error('[Server Error]', err.stack || err);
+    res.status(500).json({
+        success: false,
+        error: 'Internal Server Error',
+        message: err.message
     });
 });
 
-server.listen(PORT, () => {
-    console.log(`Kintsu Server running at http://localhost:${PORT}`);
-});
+// Start Server
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`\n======================================================`);
+        console.log(`🚀 KINTSU Full-Stack Server running at: http://localhost:${PORT}`);
+        console.log(`📦 Architecture: Express.js + Mongoose/MongoDB + EJS Engine`);
+        console.log(`📊 EJS Metrics Dashboard: http://localhost:${PORT}/stats`);
+        console.log(`======================================================\n`);
+    });
+}
+
+module.exports = app;
