@@ -34,7 +34,7 @@ Short points only. Every line below matches the code in this folder.
   (keeps `id` and `createdAt`, refreshes `lastLogin`) or pushes a new user
   with `id: 'usr_' + Date.now()` and `createdAt`.
 - It writes the whole array back to `data/users.json` and answers 201.
-- The button shows ✓ ACCOUNT CREATED. The saved users are shown by calling `GET /api/users`, and the external users by `GET /api/external/users`.
+- The button shows ✓ ACCOUNT CREATED, then the page goes to the main site (`index.html`). The saved users are shown by calling `GET /api/users`, and the external users by `GET /api/external/users`.
 - The password is checked only. It is never stored in the JSON file, never
   sent to MongoDB, and never sent anywhere else.
 
