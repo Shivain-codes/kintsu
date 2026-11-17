@@ -45,13 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
     set('kintsu_user', JSON.stringify(user));
     if (window.fetch) fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) }).catch(() => {});
 
-    if (!btn) return (location.href = 'dashboard.html');
+    if (!btn) return (location.href = 'flashcards.html');
     creating = true;
     btn.disabled = true;
     btn.textContent = 'CREATING...';
     setTimeout(() => {
       btn.textContent = '✓ ACCOUNT CREATED';
-      setTimeout(() => (location.href = 'dashboard.html'), 400);
+      setTimeout(() => (location.href = 'flashcards.html'), 400);
     }, 500);
   });
 
@@ -59,6 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('googleBtn')?.addEventListener('click', () => {
     set('kintsu_user', JSON.stringify({ email: 'student@kintsu.edu', username: 'student' }));
     $('googleBtn').textContent = 'CONNECTING...';
-    setTimeout(() => (location.href = 'dashboard.html'), 300);
+    setTimeout(() => (location.href = 'flashcards.html'), 300);
   });
 });
