@@ -1,6 +1,6 @@
 // Kintsu signup page (2nd evaluation) wired to the Express demo (3rd evaluation):
-// same validation, localStorage save and POST /api/users. No dashboard in this demo:
-// after creating an account the button resets instead of redirecting.
+// same validation, localStorage save and POST /api/users. After creating an
+// account it goes to the main site (index.html), same as the original flow.
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
   const get = k => { try { return localStorage.getItem(k); } catch { return null; } };
@@ -48,16 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) });
     } catch {}
     if (btn) btn.textContent = '✓ ACCOUNT CREATED';
-    setTimeout(() => {
-      creating = false;
-      if (btn) { btn.disabled = false; btn.textContent = 'CREATE ACCOUNT'; }
-    }, 1500);
+    setTimeout(() => (location.href = 'index.html'), 400);
   });
 
   // Continue with Google: demo only, NOT real OAuth.
   $('googleBtn')?.addEventListener('click', () => {
     set('kintsu_user', JSON.stringify({ email: 'student@kintsu.edu', username: 'student' }));
     $('googleBtn').textContent = 'CONNECTING...';
-    setTimeout(() => { $('googleBtn').textContent = 'Continue with Google'; }, 300);
+    setTimeout(() => (location.href = 'index.html'), 300);
   });
 });
