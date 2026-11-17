@@ -82,6 +82,18 @@ app.use('/api/notes', require('./routes/notes'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/flashcards', require('./routes/flashcards'));
 app.use('/api/compile', require('./routes/compile'));
+// External API: fetch public users and pass them through, so the page works
+// even when the browser blocks cross-origin calls. A failed fetch is a 502, not a crash.
+app.get('/api/external/users', async (req, res) => {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        if (!response.ok) return res.status(502).json({ success: false, error: 'External API returned status ' + response.status });
+        res.json({ success: true, data: await response.json() });
+    } catch (err) {
+        res.status(502).json({ success: false, error: 'Could not reach the external API', detail: err.message });
+    }
+});
+
 
 // ─── Static Files & Frontend Routing ─────────────────────────────────────────
 app.use(express.static(__dirname));
