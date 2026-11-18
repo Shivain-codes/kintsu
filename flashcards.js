@@ -280,7 +280,29 @@ function initLibrary() {
         fetch('/api/flashcards')
             .then(r => r.json())
             .then(res => {
-                if (res && res.count === 0 && stacks.length > 0) {
+                if (res && res.count > 0 && Array.isArray(res.data)) {
+                    const stackMap = new Map();
+                    res.data.forEach(c => {
+                        const title = c.deckTitle || 'General Study Deck';
+                        if (!stackMap.has(title)) {
+                            stackMap.set(title, {
+                                id: 'stack_' + title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                                title: title,
+                                createdAt: groupLabel(c.createdAt),
+                                createdAtRaw: c.createdAt ? new Date(c.createdAt).getTime() : Date.now(),
+                                cards: []
+                            });
+                        }
+                        stackMap.get(title).cards.push({
+                            id: c._id || c.id,
+                            question: c.question,
+                            answer: c.answer
+                        });
+                    });
+                    stacks = Array.from(stackMap.values());
+                    try { localStorage.setItem("kintsu_flashcards", JSON.stringify(stacks)); } catch (e) {}
+                    renderStacks();
+                } else if (res && res.count === 0 && stacks.length > 0) {
                     stacks.forEach(st => {
                         fetch('/api/flashcards', {
                             method: 'POST',

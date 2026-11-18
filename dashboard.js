@@ -231,16 +231,50 @@ window.openNote = function (id) {
     if (note) localStorage.setItem('kintsu_active_note', JSON.stringify(note));
 };
 
+// Toggle Pin Note (calls PATCH /api/notes/:id/pin)
 window.togglePinNote = function (id) {
     const note = notes.find(n => n.id === id || (n._id && n._id.toString() === id));
-    if (note) {
-        note.pinned = !note.pinned;
-        notes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
-        saveNotes();
-        renderNotes();
-        if (window.fetch) {
-            fetch('/api/notes/' + id + '/pin', { method: 'PATCH' }).catch(() => {});
-        }
+    if (!note) return;
+    const targetId = (note._id ? note._id.toString() : note.id) || id;
+
+    // Prevent duplicate or conflicting requests during rapid clicks
+    if (pinningNotesInFlight.has(targetId)) return;
+    pinningNotesInFlight.add(targetId);
+
+    const previousPinned = note.pinned;
+    // Optimistic UI update
+    note.pinned = !previousPinned;
+    notes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+    saveNotes();
+    renderNotes();
+
+    if (window.fetch) {
+        fetch('/api/notes/' + targetId + '/pin', { method: 'PATCH' })
+            .then(res => {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.json();
+            })
+            .then(resData => {
+                if (resData && resData.data && typeof resData.data.pinned === 'boolean') {
+                    note.pinned = resData.data.pinned;
+                }
+                notes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+                saveNotes();
+                renderNotes();
+            })
+            .catch(err => {
+                console.error('[Pin Note Error]', err);
+                // Rollback to previous state on failure
+                note.pinned = previousPinned;
+                notes.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+                saveNotes();
+                renderNotes();
+            })
+            .finally(() => {
+                pinningNotesInFlight.delete(targetId);
+            });
+    } else {
+        pinningNotesInFlight.delete(targetId);
     }
 };
 

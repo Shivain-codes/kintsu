@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "test": "node --test test/api_audit.test.js",
     "db:view": "node view_db.js"
   },
   "keywords": [
