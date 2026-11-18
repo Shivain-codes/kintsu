@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showError(err instanceof TypeError ? 'Could not reach the server.' : err.message, $('signupEmail'));
       });
   });
-  // Continue with Google: demo only, NOT real OAuth.
+  // Continue with Google: the server verifies the ID token.
   const googleHolder = $('googleSignIn');
   if (googleHolder) {
     const onGoogleCredential = response => {
